@@ -1,0 +1,50 @@
+﻿<Window x:Class="Microsoft.Gestures.Samples.CarGestures.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Microsoft.Gestures.Samples.CarGestures"
+        mc:Ignorable="d"
+        Title="Car Geatures Control" Height="800" Width="1280">
+    <Grid Width="1280" Height="720">
+
+        <Image Source="Resources/RealCar.jpg" Margin="-1775,-481,-2139,-1772"/>
+        <Viewbox StretchDirection="Both" Stretch="Uniform" Margin="535,145,208,246">
+
+            <Grid Width="1280" Height="720">
+                <Image x:Name="image" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" Source="Resources/back.png" Stretch="Fill"/>
+                <!--<Image x:Name="image" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="1280" Height="720" Source="Resources/Ref.png"/>-->
+
+                <Grid>
+                    <Image Source="Resources/radio2.png" Margin="150" Opacity="0.1"/>
+                    <TextBox x:Name="RadioText" HorizontalAlignment="Center" Height="96" TextWrapping="Wrap" Text="102.5FM" VerticalAlignment="Center" Width="596" Margin="342,262,342,362" Background="Transparent" Foreground="White" FontSize="72" TextAlignment="Center" BorderThickness="0" Opacity="0.8" Focusable="False"/>
+                    <TextBox x:Name="RadioNameText" HorizontalAlignment="Center" Height="110" TextWrapping="Wrap" Text="Galgalaz" VerticalAlignment="Center" Width="596" Margin="342,338,342,250" Background="Transparent" Foreground="White" FontSize="48" TextAlignment="Center" BorderThickness="0" Opacity="0.5" Focusable="False"/>
+                </Grid>
+                <Grid Name="TempController" Margin="1060,0,0,0">
+                    <Image Source="Resources/Tempeture.png" Width="111" Height="429"/>
+                    <Grid Name="TempPointer" Margin="45,0,112,236" VerticalAlignment="Bottom" Height="48" Width="63" ClipToBounds="False">
+                        <Image Source="Resources/TempArrow.png" Width="63" />
+                        <TextBox Name="TempText" Background="Transparent" Foreground="White" Text="25°" FontSize="36" Margin="-80,0,35,0" BorderThickness="0" Focusable="False" />
+                    </Grid>
+                    <Grid Name="TempPanel" Margin="0,256,0,226" ClipToBounds="False">
+                    </Grid>
+                </Grid>
+                <Grid Name="VolumeController" Margin="0,157,798,191" HorizontalAlignment="Center">
+                    <Image Source="Resources/VolumeIcon.png" Margin="138,107" Opacity="0.3"/>
+                    <Label Name="VolumeText" Content="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="48" Margin="184,0,188,49"/>
+                    <Image x:Name="MuteIcon" Margin="148,128" Source="Resources/mute.png" Opacity="0"/>
+                    <Path Name="VolumeDialBorder" Data="M180,80 A100,100 0 1 1 80, 180 L100,180 A80,80 0 1 0 180, 85" Width="360" Height="360" Margin="35.5,4,35.5,29" Stroke="White" StrokeThickness="3" />
+                    <Path Name="VolumeDial" Data="M180,95 A80,80 0 0 1 180, 280 L180,260 A80,80 0 0 0 180, 100" Width="360" Height="360" Margin="35.5,4,35.5,29" Fill="#CCFFFFFF" />
+                </Grid>
+                <Grid Name="AudioSourcePanel" Margin="343,587,342,0">
+                    <Image Name="AudioSourceHighlight" Source="Resources/SourceHighlight.png" Width="145" Height="132" Opacity="0.5" Margin="150,0,0,0" HorizontalAlignment="Left"/>
+                </Grid>
+                <Image x:Name="IncomingCallBack" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Width="1280" Height="720" Source="Resources/BackCall.png" Opacity="0"/>
+                <Image x:Name="IncomingCallUI" HorizontalAlignment="Center" VerticalAlignment="Center"  Source="Resources/IncomingCall.png" Width="604" Height="580" Margin="338,106,338,34" Opacity="0"/>
+                <Image x:Name="TalkingWith" HorizontalAlignment="Center" VerticalAlignment="Center"  Source="Resources/TalkingWith.png" Width="604" Height="580" Margin="338,106,338,34" Opacity="0"/>
+                <TextBox x:Name="DateText" HorizontalAlignment="Center" Height="81" TextWrapping="Wrap" Text="12:00am 20th of June 2017" VerticalAlignment="Top" Width="856" Margin="212,24,212,0" Background="Transparent" Foreground="White" FontSize="28" TextAlignment="Center" BorderThickness="0" Opacity="0.8" Focusable="False"/>
+                <Ellipse x:Name="GesturesServiceStatus" Fill="LightGray" Height="30" Width="30" StrokeThickness="1" Stroke="Black" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10"/>
+            </Grid>
+        </Viewbox>
+    </Grid>
+</Window>

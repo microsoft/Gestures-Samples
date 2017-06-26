@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoPlayerGestureControl", "VideoPlayerGestureControl\VideoPlayerGestureControl.csproj", "{EFCB5629-5CFE-4117-8FC5-1A7E88C735A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RotateSample", "RotateSample\RotateSample.csproj", "{3B1A9967-6A08-4A0D-9624-F7B68357ACC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GesturesPowerPointPlugin", "GesturesPowerPointPlugin\GesturesPowerPointPlugin.csproj", "{7277AC3C-2779-408F-B7A8-ED303C86E4DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarGestures", "CarGestures\CarGestures.csproj", "{362F34DF-2850-43CB-B449-82ED6BF0078C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFCB5629-5CFE-4117-8FC5-1A7E88C735A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFCB5629-5CFE-4117-8FC5-1A7E88C735A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFCB5629-5CFE-4117-8FC5-1A7E88C735A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFCB5629-5CFE-4117-8FC5-1A7E88C735A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B1A9967-6A08-4A0D-9624-F7B68357ACC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B1A9967-6A08-4A0D-9624-F7B68357ACC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B1A9967-6A08-4A0D-9624-F7B68357ACC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B1A9967-6A08-4A0D-9624-F7B68357ACC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7277AC3C-2779-408F-B7A8-ED303C86E4DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7277AC3C-2779-408F-B7A8-ED303C86E4DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7277AC3C-2779-408F-B7A8-ED303C86E4DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7277AC3C-2779-408F-B7A8-ED303C86E4DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{362F34DF-2850-43CB-B449-82ED6BF0078C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{362F34DF-2850-43CB-B449-82ED6BF0078C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{362F34DF-2850-43CB-B449-82ED6BF0078C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{362F34DF-2850-43CB-B449-82ED6BF0078C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

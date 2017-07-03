@@ -75,7 +75,6 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
 
             // ...construct the game gesture...
             _gameGesture = new Gesture("RockPaperScissor", rockPose, upDownX3Motion, paperPose);
-            //_gameGesture.AddTriggeringPath(rockPose, upDownX3Motion, scissorsPose);
             _gameGesture.AddSubPath(upDownX3Motion, scissorsPose, _gameGesture.IdleGestureSegment);
 
             _gameGesture.IdleTriggered += (s, arg) => { if (_lastStategy == GameStrategy.None) InvokeUserStrategyFinal(_round, GameStrategy.None); };

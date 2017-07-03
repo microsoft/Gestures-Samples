@@ -72,16 +72,10 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
                                                             new FingerPose(new[] { Finger.Ring, Finger.Pinky }, FingerFlexion.Folded));
             scissorsPose.Triggered += (s, arg) => InvokeUserStrategyChanged(GameStrategy.Scissors);
 
-            // This is an artificial 'garbage' state - we need it to allow the user a delay to transition after the upDownX3Motion from fist to scissors/paper.
-            // Otherwise, the gesture would trigger and will never get the chance to transition after the motion to one of the non fist poses.
-            // Effectively, we are not interested in this gesture's trigger event but rather only its intermediate states' trigger events.
-            var resetPose = new HandPose("ResetPose", new PalmPose(new AnyHandContext(), direction: PoseDirection.Forward, orientation: PoseDirection.Up),
-                                                      new FingerPose(new AllFingersContext(), FingerFlexion.Open));
-
             // ...construct the game gesture...
-            _gameGesture = new Gesture("RockPaperScissor", rockPose, upDownX3Motion, resetPose);
-            _gameGesture.AddSubPath(upDownX3Motion, paperPose, resetPose);
-            _gameGesture.AddSubPath(upDownX3Motion, scissorsPose, resetPose);
+            _gameGesture = new Gesture("RockPaperScissor", rockPose, upDownX3Motion, paperPose);
+            //_gameGesture.AddTriggeringPath(rockPose, upDownX3Motion, scissorsPose);
+            _gameGesture.AddSubPath(upDownX3Motion, scissorsPose, _gameGesture.IdleGestureSegment);
 
             _gameGesture.IdleTriggered += (s, arg) => { if (_lastStategy == GameStrategy.None) InvokeUserStrategyFinal(_round, GameStrategy.None); };
 
@@ -100,23 +94,20 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         private void StabilizeUserStrategy(GameStrategy newUserStrategy)
         {
             Debug.Assert(newUserStrategy != GameStrategy.None);
-            if (newUserStrategy == GameStrategy.Rock)
-            {
-                var currentRound = _round;
-                // Give the user a short grace period to change the default rock pose to one of the other poses before calling it 'Rock'
-                Task.Delay(StrategyStabilizationTimeout).ContinueWith(t => InvokeUserStrategyFinal(currentRound, newUserStrategy) );
-            }
+
+            // If it is 'Scissors'/'Paper' call it immediately
+            if (newUserStrategy != GameStrategy.Rock) InvokeUserStrategyFinal(_round, newUserStrategy);
             else
             {
-                InvokeUserStrategyFinal(_round, newUserStrategy);
+                // Give the user a short grace period to change the default 'Rock' pose to one of the other poses before calling it 'Rock'
+                var currentRound = _round;
+                Task.Delay(StrategyStabilizationTimeout)
+                    .ContinueWith(t => { if (currentRound == _round) InvokeUserStrategyFinal(currentRound, newUserStrategy); });
             }
         }
 
         private void InvokeUserStrategyFinal(uint round, GameStrategy finalStrategy)
         {
-            // if this round was already finalized ignore any update
-            if (round != _round) return;
-
             _round++;
             _lastStategy = finalStrategy;
             UserStrategyFinal(finalStrategy);

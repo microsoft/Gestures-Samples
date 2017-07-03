@@ -15,7 +15,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         None
     };
 
-    public delegate void StartRaoundHandler(uint roundNum);
+    public delegate void StartRoundHandler(uint roundNum);
     public delegate void UserStrategyChangedHandler(GameStrategy newStrategy);
 
     public sealed class GesturesRockPaperScissors : IDisposable
@@ -29,10 +29,10 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         private GesturesServiceEndpoint _gesturesService;
         private Gesture _gameGesture;
 
-        public event StatusChangedHandler GesturesDetectionStatusChanged = (oldStatus, newStatus) => { }; 
-        public event UserStrategyChangedHandler UserStrategyChanged = (s) => { };
-        public event UserStrategyChangedHandler UserStrategyFinal = (s) => { };
-        public event StartRaoundHandler StartRound = (r) => { };
+        public event StatusChangedHandler GesturesDetectionStatusChanged; 
+        public event StartRoundHandler StartRound;
+        public event UserStrategyChangedHandler UserStrategyChanged;
+        public event UserStrategyChangedHandler UserStrategyFinal;
 
         public static GameStrategy WinningStrategy(GameStrategy userStrategy)
         {
@@ -49,7 +49,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         {
             // Step1: Connect to Gesture Detection Service and route StatusChanged event to the UI
             _gesturesService = GesturesServiceEndpointFactory.Create();
-            _gesturesService.StatusChanged += (oldStatus, newStatus) => GesturesDetectionStatusChanged(oldStatus, newStatus);
+            _gesturesService.StatusChanged += (oldStatus, newStatus) => GesturesDetectionStatusChanged?.Invoke(oldStatus, newStatus);
 
             // Step2: Define the Rock-Paper-Scissors gesture
             // Start with the initial fist pose...
@@ -88,7 +88,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         private void InvokeUserStrategyChanged(GameStrategy newUserStrategy)
         {
             StabilizeUserStrategy(newUserStrategy);
-            UserStrategyChanged(newUserStrategy);
+            UserStrategyChanged?.Invoke(newUserStrategy);
         }
 
         private void StabilizeUserStrategy(GameStrategy newUserStrategy)
@@ -118,13 +118,13 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         {
             _round++;
             _lastStategy = finalStrategy;
-            UserStrategyFinal(finalStrategy);
+            UserStrategyFinal?.Invoke(finalStrategy);
         }
 
         private void InvokeStartRound()
         {
             _lastStategy = GameStrategy.None;
-            StartRound(_round);
+            StartRound?.Invoke(_round);
         }
     }
 }

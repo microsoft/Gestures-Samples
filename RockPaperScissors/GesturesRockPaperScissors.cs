@@ -15,13 +15,14 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         None
     };
 
+    public delegate void StartRaoundHandler(uint roundNum);
     public delegate void UserStrategyChangedHandler(GameStrategy newStrategy);
 
     public sealed class GesturesRockPaperScissors : IDisposable
     {
         private const int StrategyStabilizationTimeout = 400;
 
-        private volatile uint _round = 0;
+        private volatile uint _round = 1;
         private volatile GameStrategy _lastStategy = GameStrategy.None;
 
         private GesturesServiceEndpoint _gesturesService;
@@ -30,6 +31,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         public event StatusChangedHandler GesturesDetectionStatusChanged = (oldStatus, newStatus) => { }; 
         public event UserStrategyChangedHandler UserStrategyChanged = (s) => { };
         public event UserStrategyChangedHandler UserStrategyFinal = (s) => { };
+        public event StartRaoundHandler StartRound = (r) => { };
 
         public static GameStrategy WinningStrategy(GameStrategy userStrategy)
         {
@@ -51,7 +53,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
             // Step2: Define the Rock-Paper-Scissors gesture
             // Start with the initial fist pose...
             var rockPose = new HandPose("RockPose", new FingerPose(new AllFingersContext(), FingerFlexion.Folded));
-            rockPose.Triggered += (s, arg) => _lastStategy = GameStrategy.None;
+            rockPose.Triggered += (s, arg) => InvokeStartRound(); 
 
             // ...define the shaking motion of the fist up and down three times...
             var upDownX3Motion = new HandMotion("UpAndDownX3", new PalmMotion(VerticalMotionSegment.Upward, VerticalMotionSegment.Downward,
@@ -118,6 +120,12 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
             _round++;
             _lastStategy = finalStrategy;
             UserStrategyFinal(finalStrategy);
+        }
+
+        private void InvokeStartRound()
+        {
+            _lastStategy = GameStrategy.None;
+            StartRound(_round);
         }
     }
 }

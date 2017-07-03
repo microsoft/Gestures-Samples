@@ -29,50 +29,50 @@ namespace Microsoft.Gestures.Samples.CarGestures
 
         private Gesture _nextChannelGesture;
 
-        public event StatusChangedHandler StatusChanged = (s, arg) => { };
+        public event StatusChangedHandler StatusChanged;
 
-        public event EventHandler<GestureSegmentTriggeredEventArgs> DismissNotification = (s, arg) => { };
+        public event EventHandler<GestureSegmentTriggeredEventArgs> DismissNotification;
 
-        public event EventHandler<GestureSegmentTriggeredEventArgs> NextChannel = (s, arg) => { };
+        public event EventHandler<GestureSegmentTriggeredEventArgs> NextChannel;
 
-        public event EventHandler<GestureSegmentTriggeredEventArgs> AnswerCall = (s, arg) => { };
-        public event EventHandler<GestureSegmentTriggeredEventArgs> HangUpCall = (s, arg) => { };
+        public event EventHandler<GestureSegmentTriggeredEventArgs> AnswerCall;
+        public event EventHandler<GestureSegmentTriggeredEventArgs> HangUpCall;
 
-        public event EventHandler<GestureSegmentTriggeredEventArgs> VolumeUp = (s, arg) => { };
-        public event EventHandler<GestureSegmentTriggeredEventArgs> VolumeDown = (s, arg) => { };
-        public event EventHandler<GestureSegmentTriggeredEventArgs> VolumeToggleMute = (s, arg) => { };
+        public event EventHandler<GestureSegmentTriggeredEventArgs> VolumeUp;
+        public event EventHandler<GestureSegmentTriggeredEventArgs> VolumeDown;
+        public event EventHandler<GestureSegmentTriggeredEventArgs> VolumeToggleMute;
 
-        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourcePhone = (s, arg) => { };
-        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourceRadio = (s, arg) => { };
-        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourceMedia = (s, arg) => { };
-        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourceUsb = (s, arg) => { };
+        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourcePhone;
+        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourceRadio;
+        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourceMedia;
+        public event EventHandler<GestureSegmentTriggeredEventArgs> SelectSourceUsb;
 
-        public event EventHandler<GestureSegmentTriggeredEventArgs> TemperatureUp = (s, arg) => { };
-        public event EventHandler<GestureSegmentTriggeredEventArgs> TemperatureDown = (s, arg) => { };
+        public event EventHandler<GestureSegmentTriggeredEventArgs> TemperatureUp;
+        public event EventHandler<GestureSegmentTriggeredEventArgs> TemperatureDown;
 
 
         public async Task Initialize()
         {
             _gesturesService = GesturesServiceEndpointFactory.Create();
-            _gesturesService.StatusChanged += (s, arg) => StatusChanged(s, arg);
+            _gesturesService.StatusChanged += (s, args) => StatusChanged?.Invoke(s, args);
             await _gesturesService.ConnectAsync();
 
             _dismissNotificationGesture = new DismissGesture("DismissCall");
-            _dismissNotificationGesture.Triggered += async (s, arg) => {
-                                                                         DismissNotification(s, arg);
+            _dismissNotificationGesture.Triggered += async (s, args) => {
+                                                                         DismissNotification?.Invoke(s, args);
                                                                          await _gesturesService.UnregisterGesture(_answerCallGesture);
                                                                          await _gesturesService.UnregisterGesture(_dismissNotificationGesture);
                                                                        };
             // Phone Gestures
             _hangUpGesture = new HangUpGesture("HangUpCall");
-            _hangUpGesture.Triggered += async (s, arg) => {
-                                                            HangUpCall(s, arg);
+            _hangUpGesture.Triggered += async (s, args) => {
+                                                            HangUpCall?.Invoke(s, args);
                                                             await _gesturesService.UnregisterGesture(_hangUpGesture);
                                                           };
 
             _answerCallGesture = new Gesture("AnswerCall", new OnPhonePose("OnPhoneDown", PoseDirection.Down), new OnPhonePose("OnPhoneLeft", PoseDirection.Left));
-            _answerCallGesture.Triggered += async (s, arg) => {
-                                                                AnswerCall(s, arg);
+            _answerCallGesture.Triggered += async (s, args) => {
+                                                                AnswerCall?.Invoke(s, args);
                                                                 await _gesturesService.UnregisterGesture(_answerCallGesture);
                                                                 await _gesturesService.UnregisterGesture(_dismissNotificationGesture);
                                                                 await Task.Delay(1000).ContinueWith(async t =>
@@ -84,13 +84,13 @@ namespace Microsoft.Gestures.Samples.CarGestures
             // Source Selection Gestures
             var fist = new FistPose("Fist", PoseDirection.Forward);
             var selectSourcePhonePose = GenerateOpenFingersPose("SelectSourcePhone", new[] { Finger.Index });
-            selectSourcePhonePose.Triggered += (s, arg) => SelectSourcePhone(s, arg);
+            selectSourcePhonePose.Triggered += (s, args) => SelectSourcePhone?.Invoke(s, args);
             var selectSourceRadioPose = GenerateOpenFingersPose("SelectSourceRadio", new[] { Finger.Index, Finger.Middle });
-            selectSourceRadioPose.Triggered += (s, arg) => SelectSourceRadio(s, arg);
+            selectSourceRadioPose.Triggered += (s, args) => SelectSourceRadio?.Invoke(s, args);
             var selectSourceMediaPose = GenerateOpenFingersPose("SelectSourceMedia", new[] { Finger.Index, Finger.Middle, Finger.Ring });
-            selectSourceMediaPose.Triggered += (s, arg) => SelectSourceMedia(s, arg);
+            selectSourceMediaPose.Triggered += (s, args) => SelectSourceMedia?.Invoke(s, args);
             var selectSourceUsbPose = GenerateOpenFingersPose("SelectSourceUsb", new[] { Finger.Index, Finger.Middle, Finger.Ring, Finger.Pinky });
-            selectSourceUsbPose.Triggered += (s, arg) => SelectSourceUsb(s, arg);
+            selectSourceUsbPose.Triggered += (s, args) => SelectSourceUsb?.Invoke(s, args);
 
             _selectSourceGesture = new Gesture("SelectSource", fist, selectSourcePhonePose);
             _selectSourceGesture.AddTriggeringPath(fist, selectSourceRadioPose);
@@ -100,26 +100,26 @@ namespace Microsoft.Gestures.Samples.CarGestures
 
             // Volume Gestures
             _volumeToggleMuteGesture = new Gesture("VolumeToggleMute", new ClamPose("ClamOpen", clamOpen: true), new ClamPose("ClamClose", clamOpen: false));
-            _volumeToggleMuteGesture.Triggered += (s, arg) => VolumeToggleMute(s, arg);
+            _volumeToggleMuteGesture.Triggered += (s, args) => VolumeToggleMute?.Invoke(s, args);
             await _gesturesService.RegisterGesture(_volumeToggleMuteGesture);
             _volumeUpGesture = new Gesture("VolumeUp", new PointingFingerPose("Point"), new HandMotion("ClockwiseCircle", new[] { VerticalMotionSegment.ClockwiseArcRightUpward, VerticalMotionSegment.ClockwiseArcRightDownward, VerticalMotionSegment.ClockwiseArcLeftDownward, VerticalMotionSegment.ClockwiseArcLeftUpward }));
-            _volumeUpGesture.Triggered += (s, arg) => VolumeUp(s, arg);
+            _volumeUpGesture.Triggered += (s, args) => VolumeUp?.Invoke(s, args);
             await _gesturesService.RegisterGesture(_volumeUpGesture);
             _volumeDownGesture = new Gesture("VolumeDown", new PointingFingerPose("Point"), new HandMotion("CounterClockwiseCircle", new[] { VerticalMotionSegment.CounterClockwiseArcRightDownward, VerticalMotionSegment.CounterClockwiseArcRightUpward, VerticalMotionSegment.CounterClockwiseArcLeftUpward, VerticalMotionSegment.CounterClockwiseArcLeftDownward }));
-            _volumeDownGesture.Triggered += (s, arg) => VolumeDown(s, arg);
+            _volumeDownGesture.Triggered += (s, args) => VolumeDown?.Invoke(s, args);
             await _gesturesService.RegisterGesture(_volumeDownGesture);
 
             // Next Channel
             _nextChannelGesture = GenerateSwipeGesure("SwipeLeft", PoseDirection.Left);
-            _nextChannelGesture.Triggered += (s, arg) => NextChannel(s, arg);
+            _nextChannelGesture.Triggered += (s, args) => NextChannel?.Invoke(s, args);
             await _gesturesService.RegisterGesture(_nextChannelGesture);
 
             // Control A/C
             _tempratureUpGesture = GenerateSwipeGesure("SwipeUp", PoseDirection.Up);
-            _tempratureUpGesture.Triggered += (s, arg) => TemperatureUp(s, arg);
+            _tempratureUpGesture.Triggered += (s, args) => TemperatureUp?.Invoke(s, args);
             await _gesturesService.RegisterGesture(_tempratureUpGesture);
             _tempratureDownGesture = GenerateSwipeGesure("SwipeDown", PoseDirection.Down);
-            _tempratureDownGesture.Triggered += (s, arg) => TemperatureDown(s, arg);
+            _tempratureDownGesture.Triggered += (s, args) => TemperatureDown?.Invoke(s, args);
             await _gesturesService.RegisterGesture(_tempratureDownGesture);
         }
 

@@ -21,6 +21,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
     public sealed class GesturesRockPaperScissors : IDisposable
     {
         private const int StrategyStabilizationTimeout = 400;
+        private const int StartNewRoundAfterRockTimeout = 1000;
 
         private volatile uint _round = 1;
         private volatile GameStrategy _lastStategy = GameStrategy.None;
@@ -99,10 +100,18 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
             if (newUserStrategy != GameStrategy.Rock) InvokeUserStrategyFinal(_round, newUserStrategy);
             else
             {
-                // Give the user a short grace period to change the default 'Rock' pose to one of the other poses before calling it 'Rock'
                 var currentRound = _round;
+                // Give the user a short grace period to change the default 'Rock' pose to one of the other poses before calling it 'Rock'
                 Task.Delay(StrategyStabilizationTimeout)
-                    .ContinueWith(t => { if (currentRound == _round) InvokeUserStrategyFinal(currentRound, newUserStrategy); });
+                    .ContinueWith(t =>
+                    {
+                        if (currentRound == _round)
+                        {
+                            InvokeUserStrategyFinal(currentRound, newUserStrategy);
+                            // Force a gesture reset after 'Rock' - the user may perform a(n unwanted) transition to 'Paper'/'Scissors' and also we want to start a new round
+                            Task.Delay(StartNewRoundAfterRockTimeout).ContinueWith(t2 => { _gesturesService.UnregisterGesture(_gameGesture).ContinueWith(t3 => _gesturesService.RegisterGesture(_gameGesture)); });
+                        }
+                    });
             }
         }
 

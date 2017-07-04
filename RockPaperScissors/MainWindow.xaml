@@ -52,7 +52,6 @@
                 <Image Name="imgStartegyPaper" Source="pack://application:,,,/Resources/Paper.Thumbnail.png" Margin="0,-50,0,0" Visibility="Collapsed"/>
                 <Image Name="imgStartegyRock" Source="pack://application:,,,/Resources/Rock.Thumbnail.png" Margin="0,-50,0,0" Visibility="Collapsed"/>
             </StackPanel>
-            <TextBlock Name="txtPlayAgain" Text="Let's play again" FontSize="45" TextWrapping="Wrap" TextAlignment="Center" Visibility="Collapsed"/>
         </StackPanel>
         <TextBlock Name="txtCurrentStrategy" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="15" Foreground="Gray"/>
         <TextBlock Name="txtDetectionServiceStatus" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="15" Foreground="Gray"/>

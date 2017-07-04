@@ -15,21 +15,24 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         None
     };
 
+    public delegate void StartRoundHandler(uint roundNum);
     public delegate void UserStrategyChangedHandler(GameStrategy newStrategy);
 
     public sealed class GesturesRockPaperScissors : IDisposable
     {
         private const int StrategyStabilizationTimeout = 400;
+        private const int StartNewRoundAfterRockTimeout = 1000;
 
-        private volatile uint _round = 0;
+        private volatile uint _round = 1;
         private volatile GameStrategy _lastStategy = GameStrategy.None;
 
         private GesturesServiceEndpoint _gesturesService;
         private Gesture _gameGesture;
 
-        public event StatusChangedHandler GesturesDetectionStatusChanged = (oldStatus, newStatus) => { }; 
-        public event UserStrategyChangedHandler UserStrategyChanged = (s) => { };
-        public event UserStrategyChangedHandler UserStrategyFinal = (s) => { };
+        public event StatusChangedHandler GesturesDetectionStatusChanged; 
+        public event StartRoundHandler StartRound;
+        public event UserStrategyChangedHandler UserStrategyChanged;
+        public event UserStrategyChangedHandler UserStrategyFinal;
 
         public static GameStrategy WinningStrategy(GameStrategy userStrategy)
         {
@@ -46,12 +49,12 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         {
             // Step1: Connect to Gesture Detection Service and route StatusChanged event to the UI
             _gesturesService = GesturesServiceEndpointFactory.Create();
-            _gesturesService.StatusChanged += (oldStatus, newStatus) => GesturesDetectionStatusChanged(oldStatus, newStatus);
+            _gesturesService.StatusChanged += (oldStatus, newStatus) => GesturesDetectionStatusChanged?.Invoke(oldStatus, newStatus);
 
             // Step2: Define the Rock-Paper-Scissors gesture
             // Start with the initial fist pose...
             var rockPose = new HandPose("RockPose", new FingerPose(new AllFingersContext(), FingerFlexion.Folded));
-            rockPose.Triggered += (s, arg) => _lastStategy = GameStrategy.None;
+            rockPose.Triggered += (s, arg) => InvokeStartRound(); 
 
             // ...define the shaking motion of the fist up and down three times...
             var upDownX3Motion = new HandMotion("UpAndDownX3", new PalmMotion(VerticalMotionSegment.Upward, VerticalMotionSegment.Downward,
@@ -70,16 +73,9 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
                                                             new FingerPose(new[] { Finger.Ring, Finger.Pinky }, FingerFlexion.Folded));
             scissorsPose.Triggered += (s, arg) => InvokeUserStrategyChanged(GameStrategy.Scissors);
 
-            // This is an artificial 'garbage' state - we need it to allow the user a delay to transition after the upDownX3Motion from fist to scissors/paper.
-            // Otherwise, the gesture would trigger and will never get the chance to transition after the motion to one of the non fist poses.
-            // Effectively, we are not interested in this gesture's trigger event but rather only its intermediate states' trigger events.
-            var resetPose = new HandPose("ResetPose", new PalmPose(new AnyHandContext(), direction: PoseDirection.Forward, orientation: PoseDirection.Up),
-                                                      new FingerPose(new AllFingersContext(), FingerFlexion.Open));
-
             // ...construct the game gesture...
-            _gameGesture = new Gesture("RockPaperScissor", rockPose, upDownX3Motion, resetPose);
-            _gameGesture.AddSubPath(upDownX3Motion, paperPose, resetPose);
-            _gameGesture.AddSubPath(upDownX3Motion, scissorsPose, resetPose);
+            _gameGesture = new Gesture("RockPaperScissor", rockPose, upDownX3Motion, paperPose);
+            _gameGesture.AddSubPath(upDownX3Motion, scissorsPose, _gameGesture.IdleGestureSegment);
 
             _gameGesture.IdleTriggered += (s, arg) => { if (_lastStategy == GameStrategy.None) InvokeUserStrategyFinal(_round, GameStrategy.None); };
 
@@ -92,32 +88,43 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         private void InvokeUserStrategyChanged(GameStrategy newUserStrategy)
         {
             StabilizeUserStrategy(newUserStrategy);
-            UserStrategyChanged(newUserStrategy);
+            UserStrategyChanged?.Invoke(newUserStrategy);
         }
 
         private void StabilizeUserStrategy(GameStrategy newUserStrategy)
         {
             Debug.Assert(newUserStrategy != GameStrategy.None);
-            if (newUserStrategy == GameStrategy.Rock)
-            {
-                var currentRound = _round;
-                // Give the user a short grace period to change the default rock pose to one of the other poses before calling it 'Rock'
-                Task.Delay(StrategyStabilizationTimeout).ContinueWith(t => InvokeUserStrategyFinal(currentRound, newUserStrategy) );
-            }
+
+            // If it is 'Scissors'/'Paper' call it immediately
+            if (newUserStrategy != GameStrategy.Rock) InvokeUserStrategyFinal(_round, newUserStrategy);
             else
             {
-                InvokeUserStrategyFinal(_round, newUserStrategy);
+                var currentRound = _round;
+                // Give the user a short grace period to change the default 'Rock' pose to one of the other poses before calling it 'Rock'
+                Task.Delay(StrategyStabilizationTimeout)
+                    .ContinueWith(t =>
+                    {
+                        if (currentRound == _round)
+                        {
+                            InvokeUserStrategyFinal(currentRound, newUserStrategy);
+                            // Force a gesture reset after 'Rock' - the user may perform a(n unwanted) transition to 'Paper'/'Scissors' and also we want to start a new round
+                            Task.Delay(StartNewRoundAfterRockTimeout).ContinueWith(t2 => { _gesturesService.UnregisterGesture(_gameGesture).ContinueWith(t3 => _gesturesService.RegisterGesture(_gameGesture)); });
+                        }
+                    });
             }
         }
 
         private void InvokeUserStrategyFinal(uint round, GameStrategy finalStrategy)
         {
-            // if this round was already finalized ignore any update
-            if (round != _round) return;
-
             _round++;
             _lastStategy = finalStrategy;
-            UserStrategyFinal(finalStrategy);
+            UserStrategyFinal?.Invoke(finalStrategy);
+        }
+
+        private void InvokeStartRound()
+        {
+            _lastStategy = GameStrategy.None;
+            StartRound?.Invoke(_round);
         }
     }
 }

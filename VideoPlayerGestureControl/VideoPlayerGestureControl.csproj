@@ -70,9 +70,6 @@
     <Reference Include="Microsoft.Gestures">
       <HintPath>$(MicrosoftGesturesInstallDir)\Microsoft.Gestures.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Gestures.Common">
-      <HintPath>$(MicrosoftGesturesInstallDir)\Microsoft.Gestures.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Gestures.Endpoint">
       <HintPath>$(MicrosoftGesturesInstallDir)\SDK\Microsoft.Gestures.Endpoint.dll</HintPath>
     </Reference>

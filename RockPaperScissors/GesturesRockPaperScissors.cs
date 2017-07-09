@@ -21,9 +21,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
     public sealed class GesturesRockPaperScissors : IDisposable
     {
         private GesturesServiceEndpoint _gesturesService;
-        private Gesture _rockGesture;
-        private Gesture _paperGesture;
-        private Gesture _scissorsGesture;
+        private Gesture _gameGesture;
 
         public event StatusChangedHandler GesturesDetectionStatusChanged; 
         public event UserStrategyChangedHandler UserStrategyChanged;
@@ -48,26 +46,30 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
             // Step2: Define the Rock-Paper-Scissors gestures
             // One for 'Rock'...
             var rockPose = new HandPose("RockPose", new FingerPose(new AllFingersContext(), FingerFlexion.Folded));
-            _rockGesture = new Gesture("RockGesture", rockPose);
-            _rockGesture.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Rock); 
+            rockPose.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Rock); 
 
             // ...another for 'Paper'...
             var paperPose = new HandPose("PaperPose", new PalmPose(new AnyHandContext(), PoseDirection.Left | PoseDirection.Right, PoseDirection.Forward),
                                                       new FingerPose(new AllFingersContext(), FingerFlexion.Open));
-            _paperGesture = new Gesture("PaperGesture", paperPose);
-            _paperGesture.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Paper);
+            paperPose.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Paper);
 
             // ...and last one for 'Scissors'...
             var scissorsPose = new HandPose("ScissorsPose", new FingerPose(new[] { Finger.Index, Finger.Middle }, FingerFlexion.Open),
                                                             new FingertipDistanceRelation(Finger.Index, RelativeDistance.NotTouching, Finger.Middle),
                                                             new FingerPose(new[] { Finger.Ring, Finger.Pinky }, FingerFlexion.Folded));
-            _scissorsGesture = new Gesture("ScissorsGesture", scissorsPose);
-            _scissorsGesture.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Scissors);
+            scissorsPose.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Scissors);
 
+            var epsilonState = new PassThroughGestureSegment("Epsilon");
+            var giveUpPose = new HandPose("GiveUpPose", new PalmPose(new AnyHandContext(), PoseDirection.Forward, PoseDirection.Up),
+                                                        new FingerPose(new AllFingersContext(), FingerFlexion.Open));
+            _gameGesture = new Gesture("RockPaperScissorGesture", epsilonState, giveUpPose);
+            _gameGesture.AddSubPath(epsilonState, rockPose, epsilonState);
+            _gameGesture.AddSubPath(epsilonState, paperPose, epsilonState);
+            _gameGesture.AddSubPath(epsilonState, scissorsPose, epsilonState);
+            _gameGesture.IdleTriggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.None);
+                
             await _gesturesService.ConnectAsync();
-            await _gesturesService.RegisterGesture(_rockGesture);
-            await _gesturesService.RegisterGesture(_paperGesture);
-            await _gesturesService.RegisterGesture(_scissorsGesture);
+            await _gesturesService.RegisterGesture(_gameGesture);
         }
 
         public void Dispose() => _gesturesService?.Dispose();

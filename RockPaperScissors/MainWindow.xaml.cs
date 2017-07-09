@@ -27,7 +27,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
                 txtCurrentStrategy.Text = $"Last detected user strategy: [{newStrategy}]";
 
                 var winningStrategy = GesturesRockPaperScissors.WinningStrategy(newStrategy);
-                txtMessage.Text = (newStrategy == GameStrategy.None ? $@"Machine be like ¯\_(ツ)_/¯ {Environment.NewLine} Try again" :
+                txtMessage.Text = (newStrategy == GameStrategy.None ? $@"Machine be like ¯\_(ツ)_/¯" :
                                                                       $"Machine plays: {winningStrategy}");
                 txtMessage.Text += $"{Environment.NewLine} Let's play again";
                 imgStartegyRock.Visibility = winningStrategy == GameStrategy.Rock ? Visibility.Visible : Visibility.Collapsed;

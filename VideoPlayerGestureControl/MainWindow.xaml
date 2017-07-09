@@ -11,6 +11,10 @@
             <TextBlock Text="Gestures Service status "/>
             <TextBlock Name="GeturesServiceStatus" Text="[Initializing]"/>
         </StackPanel>
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Text="Pich+Drag to seek"/>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <MediaElement x:Name="animatedHelp" Width="150" Height="150"
+                      Source="RewindGesture.Animated.gif" MediaEnded="OnAnimatedHelpEnded" UnloadedBehavior="Manual" LoadedBehavior="Play"/>
+            <TextBlock Text="'Pinch + Drag Left' to rewind" TextAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>

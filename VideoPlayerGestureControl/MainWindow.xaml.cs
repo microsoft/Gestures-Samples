@@ -70,5 +70,11 @@ namespace Microsoft.Gestures.Samples.VideoPlayerGestureControl
                                       new FingertipDistanceRelation(pinchingFingers, pinchSpread ? RelativeDistance.NotTouching : RelativeDistance.Touching),
                                       new FingertipDistanceRelation(pinchingFingers, RelativeDistance.NotTouching, Finger.Middle));
         }
+
+        private void OnAnimatedHelpEnded(object sender, RoutedEventArgs e)
+        {
+            animatedHelp.Position = new TimeSpan(0, 0, 1);
+            animatedHelp.Play();
+        }
     }
 }

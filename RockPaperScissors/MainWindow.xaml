@@ -23,25 +23,19 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="[1] Shake fist up &amp; down 3 times" FontSize="22" Padding="5" Background="#efefef"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Rock" FontSize="22" Padding="5" Background="#efefef"/>
                 <Border Grid.Row="1" Grid.Column="0" Background="#efefef">
                     <Image Source="pack://application:,,,/Resources/Rock.Thumbnail.png"/>
                 </Border>
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="[2] Draw one of three poses" FontSize="22" Padding="5" Background="#d2d2d2"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Paper" FontSize="22" Padding="5" Background="#d2d2d2"/>
                 <Border Grid.Row="1" Grid.Column="1" Background="#d2d2d2">
-                    <StackPanel VerticalAlignment="Center">
-                            <Image Source="pack://application:,,,/Resources/Scissors.Thumbnail.png" Height="150"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Image Source="pack://application:,,,/Resources/Paper.Thumbnail.png" Height="150"/>
-                            <Image Source="pack://application:,,,/Resources/Rock.Thumbnail.png" Height="150"/>
-                        </StackPanel>
-                    </StackPanel>
+                    <Image Source="pack://application:,,,/Resources/Paper.Thumbnail.png"/>
                 </Border>
 
-                <TextBlock Grid.Row="0" Grid.Column="3" Text="[3] Weep - Machine wins!" FontSize="22" Padding="5" Background="#efefef"/>
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Scissors" FontSize="22" Padding="5" Background="#efefef"/>
                 <Border Grid.Row="1" Grid.Column="3" Padding="5" Background="#efefef">
-                    <TextBlock  Text=":(" FontSize="96"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Image Source="pack://application:,,,/Resources/Scissors.Thumbnail.png"/>
                 </Border>
             </Grid>
         </StackPanel>
@@ -54,6 +48,6 @@
             </StackPanel>
         </StackPanel>
         <TextBlock Name="txtCurrentStrategy" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="15" Foreground="Gray"/>
-        <TextBlock Name="txtDetectionServiceStatus" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="15" Foreground="Gray"/>
+        <TextBlock Name="txtDetectionServiceStatus" Text="Gestures Detection Service [Disconnected]" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="15" Foreground="Gray"/>
     </Grid>
 </Window>

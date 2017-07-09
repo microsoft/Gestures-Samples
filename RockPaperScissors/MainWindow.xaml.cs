@@ -17,36 +17,26 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
         public MainWindow()
         {
             InitializeComponent();
-            UpdateConnectionStatus(EndpointStatus.Disconnected);
 
             _game = new GesturesRockPaperScissors();
 
-            _game.GesturesDetectionStatusChanged += (oldStatus, newStatus) => UpdateConnectionStatus(newStatus.Status);
+            _game.GesturesDetectionStatusChanged += (oldStatus, newStatus) => Dispatcher.InvokeAsync(() => txtDetectionServiceStatus.Text = $"Gestures Detection Service [{newStatus.Status}]");
 
-            _game.StartRound += (round) => Dispatcher.InvokeAsync(() =>
+            _game.UserStrategyChanged += (newStrategy) => Dispatcher.InvokeAsync(() =>
             {
-                txtCurrentStrategy.Text = string.Empty;
-                txtMessage.Text = $"Starting round #{round}";
-                imgStartegyRock.Visibility = imgStartegyPaper.Visibility = imgStartegyScissor.Visibility = Visibility.Collapsed;
-            });
+                txtCurrentStrategy.Text = $"Last detected user strategy: [{newStrategy}]";
 
-            _game.UserStrategyChanged += (newStrategy) => Dispatcher.InvokeAsync(() => txtCurrentStrategy.Text = $"Last detected user strategy: [{newStrategy}]");
-
-            _game.UserStrategyFinal += (finalStrategy) => Dispatcher.InvokeAsync(() =>
-            {
-                var winningStrategy = GesturesRockPaperScissors.WinningStrategy(finalStrategy);
-                txtMessage.Text = (finalStrategy == GameStrategy.None ? $@"Machine be like ¯\_(ツ)_/¯ {Environment.NewLine} Try shaking a bit slower" :
-                                                                        $"Machine plays: {winningStrategy}");
+                var winningStrategy = GesturesRockPaperScissors.WinningStrategy(newStrategy);
+                txtMessage.Text = (newStrategy == GameStrategy.None ? $@"Machine be like ¯\_(ツ)_/¯ {Environment.NewLine} Try again" :
+                                                                      $"Machine plays: {winningStrategy}");
                 txtMessage.Text += $"{Environment.NewLine} Let's play again";
-                imgStartegyRock.Visibility    = winningStrategy == GameStrategy.Rock ? Visibility.Visible : Visibility.Collapsed;
-                imgStartegyPaper.Visibility   = winningStrategy == GameStrategy.Paper ? Visibility.Visible : Visibility.Collapsed;
+                imgStartegyRock.Visibility = winningStrategy == GameStrategy.Rock ? Visibility.Visible : Visibility.Collapsed;
+                imgStartegyPaper.Visibility = winningStrategy == GameStrategy.Paper ? Visibility.Visible : Visibility.Collapsed;
                 imgStartegyScissor.Visibility = winningStrategy == GameStrategy.Scissors ? Visibility.Visible : Visibility.Collapsed;
             });
 
             Loaded += async (s, arg) => await _game.Init();
             Closed += (s, arg) => _game?.Dispose();
         }
-
-        private void UpdateConnectionStatus(EndpointStatus newStatus) => Dispatcher.InvokeAsync(() => txtDetectionServiceStatus.Text = $"Gestures Detection Service [{newStatus}]");
     }
 }

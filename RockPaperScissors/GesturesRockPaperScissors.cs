@@ -44,7 +44,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
             _gesturesService.StatusChanged += (oldStatus, newStatus) => GesturesDetectionStatusChanged?.Invoke(oldStatus, newStatus);
 
             // Step2: Define the Rock-Paper-Scissors gestures
-            // One for 'Rock'...
+            // Create a pose for 'Rock'...
             var rockPose = new HandPose("RockPose", new FingerPose(new AllFingersContext(), FingerFlexion.Folded));
             rockPose.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Rock); 
 
@@ -59,15 +59,22 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
                                                             new FingerPose(new[] { Finger.Ring, Finger.Pinky }, FingerFlexion.Folded));
             scissorsPose.Triggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.Scissors);
 
+            // ...a PassThroughtGestureSegment is a structural gesture segment that provides a way to simplify a gesture state machine construction by 'short-circuiting' 
+            // between gesture segments connectd to it and gesture segements it connects to. It helps reduce the number of SubPaths that needs to be defined.
+            // Very handy when you need to define a Clique (see https://en.wikipedia.org/wiki/Clique_(graph_theory)#1)
+            // as in this case where Rock, Paper and Scissors are all connected to each other...
             var epsilonState = new PassThroughGestureSegment("Epsilon");
             var giveUpPose = new HandPose("GiveUpPose", new PalmPose(new AnyHandContext(), PoseDirection.Forward, PoseDirection.Up),
                                                         new FingerPose(new AllFingersContext(), FingerFlexion.Open));
+
             _gameGesture = new Gesture("RockPaperScissorGesture", epsilonState, giveUpPose);
+            // ...add a sub path back and forth from the PassthroughGestureSegment to the various poses
             _gameGesture.AddSubPath(epsilonState, rockPose, epsilonState);
             _gameGesture.AddSubPath(epsilonState, paperPose, epsilonState);
             _gameGesture.AddSubPath(epsilonState, scissorsPose, epsilonState);
             _gameGesture.IdleTriggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.None);
                 
+            // Step3: Connect to the gesture detection service and register the gesture
             await _gesturesService.ConnectAsync();
             await _gesturesService.RegisterGesture(_gameGesture);
         }

@@ -11,5 +11,10 @@
             <TextBlock Text="Gestures Service status "/>
             <TextBlock Name="GesturesServiceStatus" Text="[Initializing]"/>
         </StackPanel>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <MediaElement x:Name="animatedHelp" Width="150" Height="150"
+                      Source="RotateRight.Animated.gif" MediaEnded="OnAnimatedHelpEnded" UnloadedBehavior="Manual" LoadedBehavior="Play"/>
+            <TextBlock Text="Try rotating the arrow" TextAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>

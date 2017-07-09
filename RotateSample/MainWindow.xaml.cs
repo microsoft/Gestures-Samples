@@ -2,6 +2,7 @@
 using Microsoft.Gestures;
 using Microsoft.Gestures.Endpoint;
 using System.Windows.Media;
+using System;
 
 namespace Microsoft.Gestures.Samples.RotateSample
 {
@@ -42,6 +43,12 @@ namespace Microsoft.Gestures.Samples.RotateSample
             // Step 3: Register the gesture (When window focus is lost/gained the service will effectively change the gesture registration automatically)
             //         To manually control the gesture registration, pass 'isGlobal: true' parameter in the function call below
             await _gesturesService.RegisterGesture(_rotateGesture);
+        }
+
+        private void OnAnimatedHelpEnded(object sender, RoutedEventArgs e)
+        {
+            animatedHelp.Position = new TimeSpan(0, 0, 1);
+            animatedHelp.Play();
         }
     }
 }

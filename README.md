@@ -1,6 +1,6 @@
 # Overview
 
-This repository contains C# code samples demonstrating how to use the [Project Prague](https://aka.ms/gestures) hand gestures SDK. For a quick introduction to programming with our SDK, please visit our [overview page on docs.microsoft.com](https://docs.microsoft.com/en-us/gestures/). In order to build and run the code samples provided in this repository, you must first [set up Project Prague on your machine](https://docs.microsoft.com/en-us/gestures/index#getting-started-with-project-prague). Note that you will need an [**Intel (R) RealSense (TM) SR300 camera**](https://click.intel.com/intelrealsense-developer-kit-featuring-sr300.html) to enable our gesture detection runtime.
+This repository contains C# code samples demonstrating how to use the [Project Prague](https://aka.ms/gestures) hand gestures SDK. For a quick introduction to programming with our SDK, please visit our [overview page on docs.microsoft.com](https://docs.microsoft.com/en-us/gestures/). In order to build and run the code samples provided in this repository, you must first [set up Project Prague on your machine](https://docs.microsoft.com/en-us/gestures/index#getting-started-with-project-prague). Note that you will need an [**Intel® RealSense™ SR300 camera**](https://click.intel.com/intelrealsense-developer-kit-featuring-sr300.html) to enable our gesture detection runtime.
 
 # Code Samples
 
@@ -9,10 +9,10 @@ After cloning this repository, please open the [Microsoft.Gestures.Samples](Micr
 Sample|Use case|What will you learn?
 ------|-----------|--------------------
 [RotateSample](RotateSample) | Rotate an image by 90° | Create a simple [gesture](https://docs.microsoft.com/en-us/gestures/index#gesture) made up of two [hand poses](https://docs.microsoft.com/en-us/gestures/index#hand-pose)
-[VideoPlayerGestureControl](VideoPlayerGestureControl) | Pause and rewind audio\video playback | Create a [gesture](https://docs.microsoft.com/en-us/gestures/index#gesture) mode up of a sequence of multiple [hand poses](https://docs.microsoft.com/en-us/gestures/index#hand-pose) and a [hand motion](https://docs.microsoft.com/en-us/gestures/index#hand-motion)
+[VideoPlayerGestureControl](VideoPlayerGestureControl) | Pause and rewind audio\video playback | Create a [gesture](https://docs.microsoft.com/en-us/gestures/index#gesture) made up of a sequence of multiple [hand poses](https://docs.microsoft.com/en-us/gestures/index#hand-pose) and a [hand motion](https://docs.microsoft.com/en-us/gestures/index#hand-motion)
 [RockPaperScissors](RockPaperScissors) | Play Rock-Paper-Scissors against an invincible bot | Create a [gesture](https://docs.microsoft.com/en-us/gestures/index#gesture) made up of multiple [hand poses](https://docs.microsoft.com/en-us/gestures/index#hand-pose) connected in a complex structure
-[GesturesPowerPointPlugin](GesturesPowerPointPlugin) | Create and present a slideshow in PowerPoint using gestures | Create multiple simple [gestures](https://docs.microsoft.com/en-us/gestures/index#gesture) and wire them to activate various PowerPoint features
-[CarGestures](CarGestures) | Control a virtual dashboard computer using gestures | Create a complete WPF UI with multiple [gestures](https://docs.microsoft.com/en-us/gestures/index#gesture) of varying complexity
+[GesturesPowerPointPlugin](GesturesPowerPointPlugin) (requires [Office Tools for Visual Studio](https://www.visualstudio.com/vs/office-tools/))| Create and present a slideshow in PowerPoint using gestures | Create multiple simple [gestures](https://docs.microsoft.com/en-us/gestures/index#gesture) and wire them to activate various PowerPoint features
+[CarGestures](CarGestures) | Control a virtual car's infotainment-system with gestures | Create a complete WPF UI with multiple [gestures](https://docs.microsoft.com/en-us/gestures/index#gesture) of varying complexity
 
 # Contributing
 

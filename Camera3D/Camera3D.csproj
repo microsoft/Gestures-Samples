@@ -50,6 +50,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Gestures">
+      <HintPath>$(MicrosoftGesturesInstallDir)\Microsoft.Gestures.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Gestures.Endpoint">
+      <HintPath>$(MicrosoftGesturesInstallDir)\SDK\Microsoft.Gestures.Endpoint.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Gestures.Protocol">
+      <HintPath>$(MicrosoftGesturesInstallDir)\Microsoft.Gestures.Protocol.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

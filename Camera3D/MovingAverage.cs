@@ -29,6 +29,12 @@ namespace Camera3D
             }
         }
 
+        public void Flush()
+        {
+            _window.Clear();
+            _currentSum = new Vector3(0, 0, 0);
+        }
+
         public Vector3 CurrentAverage => _currentSum * (1 / (float)Math.Max(_window.Count, 1));
     }
 }

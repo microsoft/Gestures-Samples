@@ -27,14 +27,17 @@ namespace Camera3D
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int MovingAverageWindowSize = 5;
+        const int MovingAverageWindowSize = 5; // [samples]
+        const float PalmPositionJumpThreshold = 50; // [mm]
 
         private Random _rand = new Random();
         private GesturesServiceEndpoint _gesturesService;
         private Gesture _cameraPinch;
 
-        private MovingAverage _movingWindow;
-        private Vector3 _lastPalmLocationAverage = new Vector3(0, 0, 0);
+        private MovingAverage _movingAverage;
+        private Vector3 _lastAveragePosition = new Vector3(0, 0, 0);
+
+        private SphericalCamera _sphericalCamera;
 
         public MainWindow()
         {
@@ -59,21 +62,29 @@ namespace Camera3D
             await _gesturesService.RegisterGesture(_cameraPinch);
 
             // auxiliary classes to control the camera motion
-            _movingWindow = new MovingAverage(MovingAverageWindowSize);
+            _movingAverage = new MovingAverage(MovingAverageWindowSize);
+            _sphericalCamera = new SphericalCamera(Camera, Dispatcher);
         }
 
         private void OnSekeltonReady(object sender, HandSkeletonsReadyEventArgs e)
         {
-            _movingWindow.AddNewSample(e.DefaultHandSkeleton.PalmPosition);
-            var currentPalmLocationAverage = _movingWindow.CurrentAverage;
-            var diff = currentPalmLocationAverage - _lastPalmLocationAverage;
-            _lastPalmLocationAverage = currentPalmLocationAverage;
+            var currentPosition = e.DefaultHandSkeleton.PalmPosition;
 
-            // Yoni: do the right logic here for smoothing and moving camera
-            if (diff.X < 10 && diff.Y < 10 && diff.Z < 10)
+            // filter out jumps in palm location
+            if ((currentPosition - _movingAverage.CurrentAverage).TwoNorm() > PalmPositionJumpThreshold)
             {
-                Dispatcher.InvokeAsync(() => Camera.Position = Camera.Position + new Vector3D(diff.X, diff.Y, diff.Z));
+                _movingAverage.Flush();
+                _movingAverage.AddNewSample(currentPosition);
+                _lastAveragePosition = currentPosition;
+                return;
             }
+
+            _movingAverage.AddNewSample(currentPosition);
+            var currentAveragePosition = _movingAverage.CurrentAverage;
+            var diff = currentAveragePosition - _lastAveragePosition;
+            _lastAveragePosition = currentAveragePosition;
+
+            _sphericalCamera.UpdateCamera(diff);
         }
     }
 }

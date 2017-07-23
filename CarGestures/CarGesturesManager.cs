@@ -137,27 +137,25 @@ namespace Microsoft.Gestures.Samples.CarGestures
         private HandPose GenerateOpenFingersPose(string name, Finger[] fingers)
         {
             var nonThumbOtherFingers = (new[] { Finger.Index, Finger.Middle, Finger.Ring, Finger.Pinky }).Except(fingers);
-            var fingersOpenPose = new HandPose(name, new PalmPose(new AnyHandContext(), PoseDirection.Forward),
+            var fingersOpenPose = new HandPose(name, new PalmPose(new AnyHandContext(), PoseDirection.Forward, PoseDirection.Up),
                                                      new FingerPose(fingers, FingerFlexion.Open, PoseDirection.Up),
                                                      new FingertipDistanceRelation(fingers, RelativeDistance.NotTouching, nonThumbOtherFingers.Union(new[] { Finger.Thumb })));
-            if (nonThumbOtherFingers.Any()) fingersOpenPose.PoseConstraints.Add(new FingerPose(nonThumbOtherFingers, PoseDirection.Down | PoseDirection.Forward | PoseDirection.Backward));
+            if (nonThumbOtherFingers.Any()) fingersOpenPose.PoseConstraints.Add(new FingerPose(nonThumbOtherFingers, PoseDirection.Down | PoseDirection.Backward | PoseDirection.Forward | PoseDirection.Left | PoseDirection.Right));
             return fingersOpenPose;
         }
 
         private Gesture GenerateSwipeGesure(string name, PoseDirection direction)
         {
-            var fingerSet = new HandPose("FingersSet", new PalmPose(new AnyHandContext(), direction),
-                                                       new FingertipDistanceRelation(Finger.Index, RelativeDistance.Touching, Finger.Middle),
-                                                       new FingerPose(Finger.Index, PoseDirection.Forward),
-                                                       new FingerPose(Finger.Middle, PoseDirection.Forward));
+            var fingers = new[] { Finger.Index, Finger.Middle, Finger.Ring };
+            var fingerSet = new HandPose("FingersSet", new PalmPose(new AnyHandContext(), direction, orientation: PoseDirection.Forward),
+                                                       new FingertipDistanceRelation(Finger.Middle, RelativeDistance.Touching, new[] { Finger.Index, Finger.Ring }),
+                                                       new FingerPose(fingers, PoseDirection.Forward));
 
-            var fingersBent = new HandPose("FingersBent", new PalmPose(new AnyHandContext(), direction),
-                                                          new FingertipDistanceRelation(Finger.Index, RelativeDistance.Touching, Finger.Middle),
-                                                          new FingerPose(Finger.Index, direction),
-                                                          new FingerPose(Finger.Middle, direction));
+            var fingersBent = new HandPose("FingersBent", new PalmPose(new AnyHandContext(), direction, orientation: PoseDirection.Forward),
+                                                          new FingertipDistanceRelation(Finger.Middle, RelativeDistance.Touching, new[] { Finger.Index, Finger.Ring }),
+                                                          new FingerPose(fingers, direction | PoseDirection.Backward));
 
             var swipeGesture = new Gesture(name, fingerSet, fingersBent);
-            swipeGesture.AddTriggeringPath(fingerSet, new FistPose("Fist", direction));
             return swipeGesture;
         }
     }

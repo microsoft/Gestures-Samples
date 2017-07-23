@@ -11,8 +11,8 @@ namespace Camera3D
 {
     public class SphericalCamera
     {
-        const float TumbleCoefficient = 1 / 150f;
-        const float DolllyCoefficient = 1 / 10f;
+        const float TumbleCoefficient = 1 / 100f;
+        const float DolllyCoefficient = 1 / 8f;
 
         private Dispatcher _dispatcher;
         private PerspectiveCamera _camera;

@@ -74,6 +74,8 @@ namespace Microsoft.Gestures.Samples.CarGestures
         private int CallGenerationInterval = 45 * 1000; //in msec
         private Timer _callGenerator;
 
+        private Queue<Tuple<Uri, string>> _animationQueue = new Queue<Tuple<Uri, string>>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -226,8 +228,13 @@ namespace Microsoft.Gestures.Samples.CarGestures
         {
             // Incoming Call
             IncomingCallBack.Opacity += (_targetCallBackOpacity - IncomingCallBack.Opacity) / AnimationSpeed;
+            IncomingCallBack.Visibility = IncomingCallBack.Opacity > 0.1 ? Visibility.Visible : Visibility.Collapsed;
+
             IncomingCallUI.Opacity += (_targetIncomingCallOpacity - IncomingCallUI.Opacity) / AnimationSpeed;
+            IncomingCallUI.Visibility = IncomingCallUI.Opacity > 0.1 ? Visibility.Visible : Visibility.Collapsed;
+
             TalkingWith.Opacity += (_targetTalkingWithOpacity - TalkingWith.Opacity) / AnimationSpeed;
+            TalkingWith.Visibility = TalkingWith.Opacity > 0.1 ? Visibility.Visible : Visibility.Collapsed;
 
             // Volume
             _currentVolume += (_targetVolume - _currentVolume) / AnimationSpeed;
@@ -307,5 +314,107 @@ namespace Microsoft.Gestures.Samples.CarGestures
         public void TempDown() => _targetTemperature = Math.Max(_targetTemperature - TempIncrement, MinTemp);
 
         public void SetAudioSource(AudioSource source) => _audioSource = source;
+
+        private void OnAnimatedHelpEnded(object sender, RoutedEventArgs e)
+        {
+            PlayNextAnimation();
+        }
+
+        private void PlayNextAnimation()
+        {
+            Tuple<Uri, string> nextAnimation;
+            lock (_animationQueue)
+            {
+                if (!_animationQueue.Any())
+                {
+                    animatedHelpContainer.Visibility = Visibility.Collapsed;
+                    return;
+                }
+                nextAnimation = _animationQueue.Dequeue();
+            }
+
+            animatedHelp.Source = nextAnimation.Item1;
+            animatedHelp.Position = new TimeSpan(0, 0, 1);
+            animatedHelpCaption.Text = nextAnimation.Item2;
+            animatedHelp.Play();
+            animatedHelpContainer.Visibility = Visibility.Visible;
+        }
+
+        private void HoverMouseLeave(object sender, MouseEventArgs e)
+        {
+            lock (_animationQueue)
+            {
+                _animationQueue.Clear();
+            }
+            animatedHelpContainer.Visibility = Visibility.Collapsed;
+            animatedHelp.Source = null;
+            animatedHelpCaption.Text = string.Empty;
+        }
+
+        private void ChannelMouseEnter(object sender, MouseEventArgs e)
+        {
+            lock (_animationQueue)
+            {
+                _animationQueue.Clear();
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("SwitchChannel"), "Switch Channel"));
+            }
+            PlayNextAnimation();
+        }
+
+        private void SourcesMouseEnter(object sender, MouseEventArgs e)
+        {
+            lock (_animationQueue)
+            {
+                _animationQueue.Clear();
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("SwitchSource"), "Switch Source"));
+            }
+            PlayNextAnimation();
+        }
+
+        private void VolumeMouseEnter(object sender, MouseEventArgs e)
+        {
+            lock (_animationQueue)
+            {
+                _animationQueue.Clear();
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("VolumeToggleMute"), "Toggle Mute"));
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("VolumeUp"), "Volume Up"));
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("VolumeDown"), "Volume Down"));
+            }
+            PlayNextAnimation();
+        }
+
+        private void ACMouseEnter(object sender, MouseEventArgs e)
+        {
+            lock (_animationQueue)
+            {
+                _animationQueue.Clear();
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("ACUp"), "Increase Temp"));
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("ACDown"), "Decrease Temp"));
+            }
+            PlayNextAnimation();
+        }
+
+        private void IncommingCallMouseEnter(object sender, MouseEventArgs e)
+        {
+            lock (_animationQueue)
+            {
+                _animationQueue.Clear();
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("AnswerCall"), "Answer Call"));
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("DismissCall"), "Dismiss Call"));
+            }
+            PlayNextAnimation();
+        }
+
+        private void TalkingWithMouseEnter(object sender, MouseEventArgs e)
+        {
+            lock (_animationQueue)
+            {
+                _animationQueue.Clear();
+                _animationQueue.Enqueue(new Tuple<Uri, string>(GetAnimationUri("HangUpCall"), "Hang Up Call"));
+            }
+            PlayNextAnimation();
+        }
+
+        private Uri GetAnimationUri(string name) => new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, $@"Resources\Animations\{name}.Animated.gif"), UriKind.Absolute);
     }
 }

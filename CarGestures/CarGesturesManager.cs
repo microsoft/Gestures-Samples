@@ -60,16 +60,16 @@ namespace Microsoft.Gestures.Samples.CarGestures
 
             _dismissNotificationGesture = new DismissGesture("DismissCall");
             _dismissNotificationGesture.Triggered += async (s, args) => {
-                                                                         DismissNotification?.Invoke(s, args);
-                                                                         await _gesturesService.UnregisterGesture(_answerCallGesture);
-                                                                         await _gesturesService.UnregisterGesture(_dismissNotificationGesture);
-                                                                       };
+                                                                          DismissNotification?.Invoke(s, args);
+                                                                          await _gesturesService.UnregisterGesture(_answerCallGesture);
+                                                                          await _gesturesService.UnregisterGesture(_dismissNotificationGesture);
+                                                                        };
             // Phone Gestures
             _hangUpGesture = new HangUpGesture("HangUpCall");
             _hangUpGesture.Triggered += async (s, args) => {
-                                                            HangUpCall?.Invoke(s, args);
-                                                            await _gesturesService.UnregisterGesture(_hangUpGesture);
-                                                          };
+                                                             HangUpCall?.Invoke(s, args);
+                                                             await _gesturesService.UnregisterGesture(_hangUpGesture);
+                                                           };
 
             _answerCallGesture = new Gesture("AnswerCall", new OnPhonePose("OnPhoneDown", PoseDirection.Down), new OnPhonePose("OnPhoneLeft", PoseDirection.Left));
             _answerCallGesture.Triggered += async (s, args) => {

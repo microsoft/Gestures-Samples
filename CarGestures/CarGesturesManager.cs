@@ -28,6 +28,7 @@ namespace Microsoft.Gestures.Samples.CarGestures
         private Gesture _tempratureDownGesture;
 
         private Gesture _nextChannelGesture;
+        private int _currentSource = 1;
 
         public event StatusChangedHandler StatusChanged;
 
@@ -82,20 +83,25 @@ namespace Microsoft.Gestures.Samples.CarGestures
                                                               };
 
             // Source Selection Gestures
-            var fist = new FistPose("Fist", PoseDirection.Forward);
-            var selectSourcePhonePose = GenerateOpenFingersPose("SelectSourcePhone", new[] { Finger.Index });
-            selectSourcePhonePose.Triggered += (s, args) => SelectSourcePhone?.Invoke(s, args);
-            var selectSourceRadioPose = GenerateOpenFingersPose("SelectSourceRadio", new[] { Finger.Index, Finger.Middle });
-            selectSourceRadioPose.Triggered += (s, args) => SelectSourceRadio?.Invoke(s, args);
-            var selectSourceMediaPose = GenerateOpenFingersPose("SelectSourceMedia", new[] { Finger.Index, Finger.Middle, Finger.Ring });
-            selectSourceMediaPose.Triggered += (s, args) => SelectSourceMedia?.Invoke(s, args);
-            var selectSourceUsbPose = GenerateOpenFingersPose("SelectSourceUsb", new[] { Finger.Index, Finger.Middle, Finger.Ring, Finger.Pinky });
-            selectSourceUsbPose.Triggered += (s, args) => SelectSourceUsb?.Invoke(s, args);
-
-            _selectSourceGesture = new Gesture("SelectSource", fist, selectSourcePhonePose);
-            _selectSourceGesture.AddTriggeringPath(fist, selectSourceRadioPose);
-            _selectSourceGesture.AddTriggeringPath(fist, selectSourceMediaPose);
-            _selectSourceGesture.AddTriggeringPath(fist, selectSourceUsbPose);
+            _selectSourceGesture = new TapGesture("SelectSource");
+            _selectSourceGesture.Triggered += (s, args) => {
+                                                               _currentSource = (_currentSource + 1) % 4;
+                                                               switch (_currentSource)
+                                                               {
+                                                                   case 0:
+                                                                       SelectSourcePhone?.Invoke(s, args);
+                                                                       break;
+                                                                   case 1:
+                                                                       SelectSourceRadio?.Invoke(s, args);
+                                                                       break;
+                                                                   case 2:
+                                                                       SelectSourceMedia?.Invoke(s, args);
+                                                                       break;
+                                                                   case 3:
+                                                                       SelectSourceUsb?.Invoke(s, args);
+                                                                       break;
+                                                               }
+                                                           };
             await _gesturesService.RegisterGesture(_selectSourceGesture);
 
             // Volume Gestures

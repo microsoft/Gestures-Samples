@@ -82,7 +82,7 @@ namespace Microsoft.Gestures.Samples.CarGestures
 
             Loaded += async (s, a) => {
                                         Closed += (sender, arg) => _gesturesManager.Dispose();
-                                        _gesturesManager.StatusChanged += (sender, arg) => Dispatcher.Invoke(() => GesturesServiceStatus.Fill = new SolidColorBrush(arg.Status == EndpointStatus.Connected ? Colors.LightGreen : Colors.LightGray));
+                                        _gesturesManager.StatusChanged += (sender, arg) => Dispatcher.Invoke(() => GesturesServiceStatus.Fill = new SolidColorBrush(arg.Status == EndpointStatus.Detecting ? Colors.LightGreen : Colors.LightGray));
 
                                         _gesturesManager.DismissNotification += (s1, a1) => DeclineCall();
 

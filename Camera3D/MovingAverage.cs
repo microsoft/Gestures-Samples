@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Camera3D
+namespace Microsoft.Gestures.Samples.Camera3D
 {
     public delegate void AverageChangedHandler(Vector3 delta);
 

@@ -20,7 +20,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Camera3D
+namespace Microsoft.Gestures.Samples.Camera3D
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

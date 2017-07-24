@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Camera3D
+namespace Microsoft.Gestures.Samples.Camera3D
 {
     /// <summary>
     /// Interaction logic for App.xaml

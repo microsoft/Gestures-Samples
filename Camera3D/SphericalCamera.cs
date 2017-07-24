@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 
-namespace Camera3D
+namespace Microsoft.Gestures.Samples.Camera3D
 {
     public class SphericalCamera
     {

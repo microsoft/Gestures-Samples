@@ -28,6 +28,7 @@ namespace Microsoft.Gestures.Samples.CarGestures
         private Gesture _tempratureDownGesture;
 
         private Gesture _nextChannelGesture;
+        private int _currentSource = 1;
 
         public event StatusChangedHandler StatusChanged;
 
@@ -59,16 +60,16 @@ namespace Microsoft.Gestures.Samples.CarGestures
 
             _dismissNotificationGesture = new DismissGesture("DismissCall");
             _dismissNotificationGesture.Triggered += async (s, args) => {
-                                                                         DismissNotification?.Invoke(s, args);
-                                                                         await _gesturesService.UnregisterGesture(_answerCallGesture);
-                                                                         await _gesturesService.UnregisterGesture(_dismissNotificationGesture);
-                                                                       };
+                                                                          DismissNotification?.Invoke(s, args);
+                                                                          await _gesturesService.UnregisterGesture(_answerCallGesture);
+                                                                          await _gesturesService.UnregisterGesture(_dismissNotificationGesture);
+                                                                        };
             // Phone Gestures
             _hangUpGesture = new HangUpGesture("HangUpCall");
             _hangUpGesture.Triggered += async (s, args) => {
-                                                            HangUpCall?.Invoke(s, args);
-                                                            await _gesturesService.UnregisterGesture(_hangUpGesture);
-                                                          };
+                                                             HangUpCall?.Invoke(s, args);
+                                                             await _gesturesService.UnregisterGesture(_hangUpGesture);
+                                                           };
 
             _answerCallGesture = new Gesture("AnswerCall", new OnPhonePose("OnPhoneDown", PoseDirection.Down), new OnPhonePose("OnPhoneLeft", PoseDirection.Left));
             _answerCallGesture.Triggered += async (s, args) => {
@@ -82,20 +83,25 @@ namespace Microsoft.Gestures.Samples.CarGestures
                                                               };
 
             // Source Selection Gestures
-            var fist = new FistPose("Fist", PoseDirection.Forward);
-            var selectSourcePhonePose = GenerateOpenFingersPose("SelectSourcePhone", new[] { Finger.Index });
-            selectSourcePhonePose.Triggered += (s, args) => SelectSourcePhone?.Invoke(s, args);
-            var selectSourceRadioPose = GenerateOpenFingersPose("SelectSourceRadio", new[] { Finger.Index, Finger.Middle });
-            selectSourceRadioPose.Triggered += (s, args) => SelectSourceRadio?.Invoke(s, args);
-            var selectSourceMediaPose = GenerateOpenFingersPose("SelectSourceMedia", new[] { Finger.Index, Finger.Middle, Finger.Ring });
-            selectSourceMediaPose.Triggered += (s, args) => SelectSourceMedia?.Invoke(s, args);
-            var selectSourceUsbPose = GenerateOpenFingersPose("SelectSourceUsb", new[] { Finger.Index, Finger.Middle, Finger.Ring, Finger.Pinky });
-            selectSourceUsbPose.Triggered += (s, args) => SelectSourceUsb?.Invoke(s, args);
-
-            _selectSourceGesture = new Gesture("SelectSource", fist, selectSourcePhonePose);
-            _selectSourceGesture.AddTriggeringPath(fist, selectSourceRadioPose);
-            _selectSourceGesture.AddTriggeringPath(fist, selectSourceMediaPose);
-            _selectSourceGesture.AddTriggeringPath(fist, selectSourceUsbPose);
+            _selectSourceGesture = new TapGesture("SelectSource");
+            _selectSourceGesture.Triggered += (s, args) => {
+                                                               _currentSource = (_currentSource + 1) % 4;
+                                                               switch (_currentSource)
+                                                               {
+                                                                   case 0:
+                                                                       SelectSourcePhone?.Invoke(s, args);
+                                                                       break;
+                                                                   case 1:
+                                                                       SelectSourceRadio?.Invoke(s, args);
+                                                                       break;
+                                                                   case 2:
+                                                                       SelectSourceMedia?.Invoke(s, args);
+                                                                       break;
+                                                                   case 3:
+                                                                       SelectSourceUsb?.Invoke(s, args);
+                                                                       break;
+                                                               }
+                                                           };
             await _gesturesService.RegisterGesture(_selectSourceGesture);
 
             // Volume Gestures
@@ -137,27 +143,25 @@ namespace Microsoft.Gestures.Samples.CarGestures
         private HandPose GenerateOpenFingersPose(string name, Finger[] fingers)
         {
             var nonThumbOtherFingers = (new[] { Finger.Index, Finger.Middle, Finger.Ring, Finger.Pinky }).Except(fingers);
-            var fingersOpenPose = new HandPose(name, new PalmPose(new AnyHandContext(), PoseDirection.Forward),
+            var fingersOpenPose = new HandPose(name, new PalmPose(new AnyHandContext(), PoseDirection.Forward, PoseDirection.Up),
                                                      new FingerPose(fingers, FingerFlexion.Open, PoseDirection.Up),
                                                      new FingertipDistanceRelation(fingers, RelativeDistance.NotTouching, nonThumbOtherFingers.Union(new[] { Finger.Thumb })));
-            if (nonThumbOtherFingers.Any()) fingersOpenPose.PoseConstraints.Add(new FingerPose(nonThumbOtherFingers, PoseDirection.Down | PoseDirection.Forward | PoseDirection.Backward));
+            if (nonThumbOtherFingers.Any()) fingersOpenPose.PoseConstraints.Add(new FingerPose(nonThumbOtherFingers, PoseDirection.Down | PoseDirection.Backward | PoseDirection.Forward | PoseDirection.Left | PoseDirection.Right));
             return fingersOpenPose;
         }
 
         private Gesture GenerateSwipeGesure(string name, PoseDirection direction)
         {
-            var fingerSet = new HandPose("FingersSet", new PalmPose(new AnyHandContext(), direction),
-                                                       new FingertipDistanceRelation(Finger.Index, RelativeDistance.Touching, Finger.Middle),
-                                                       new FingerPose(Finger.Index, PoseDirection.Forward),
-                                                       new FingerPose(Finger.Middle, PoseDirection.Forward));
+            var fingers = new[] { Finger.Index, Finger.Middle, Finger.Ring };
+            var fingerSet = new HandPose("FingersSet", new PalmPose(new AnyHandContext(), direction, orientation: PoseDirection.Forward),
+                                                       new FingertipDistanceRelation(Finger.Middle, RelativeDistance.Touching, new[] { Finger.Index, Finger.Ring }),
+                                                       new FingerPose(fingers, PoseDirection.Forward));
 
-            var fingersBent = new HandPose("FingersBent", new PalmPose(new AnyHandContext(), direction),
-                                                          new FingertipDistanceRelation(Finger.Index, RelativeDistance.Touching, Finger.Middle),
-                                                          new FingerPose(Finger.Index, direction),
-                                                          new FingerPose(Finger.Middle, direction));
+            var fingersBent = new HandPose("FingersBent", new PalmPose(new AnyHandContext(), direction, orientation: PoseDirection.Forward),
+                                                          new FingertipDistanceRelation(Finger.Middle, RelativeDistance.Touching, new[] { Finger.Index, Finger.Ring }),
+                                                          new FingerPose(fingers, direction | PoseDirection.Backward));
 
             var swipeGesture = new Gesture(name, fingerSet, fingersBent);
-            swipeGesture.AddTriggeringPath(fingerSet, new FistPose("Fist", direction));
             return swipeGesture;
         }
     }

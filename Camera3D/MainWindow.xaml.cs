@@ -53,6 +53,7 @@ namespace Microsoft.Gestures.Samples.Camera3D
 
             // connect to the Gestures Service and register the gesture we've defined
             _gesturesService = GesturesServiceEndpointFactory.Create();
+            _gesturesService.StatusChanged += (s, arg) => Dispatcher.Invoke(() => GesturesServiceStatus.Text = $"[{arg.Status}]");
             await _gesturesService.ConnectAsync();
             await _gesturesService.RegisterGesture(_cameraPinch);
 
@@ -63,5 +64,11 @@ namespace Microsoft.Gestures.Samples.Camera3D
         }
 
         private void OnSekeltonReady(object sender, HandSkeletonsReadyEventArgs e) => _movingAverage.AddNewSample(e.DefaultHandSkeleton.PalmPosition);
+
+        private void OnAnimatedHelpEnded(object sender, RoutedEventArgs e)
+        {
+            animatedHelp.Position = new TimeSpan(0, 0, 1);
+            animatedHelp.Play();
+        }
     }
 }

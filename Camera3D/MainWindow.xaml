@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Microsoft.Gestures.Samples.Camera3D"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="3D Camera" Height="500" Width="750">
     <Grid>
         <Viewport3D>
             <Viewport3D.Camera>
@@ -32,5 +32,14 @@
                 </ModelVisual3D.Content>
             </ModelVisual3D>
         </Viewport3D>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal">
+            <TextBlock Text="Gestures Service status "/>
+            <TextBlock Name="GesturesServiceStatus" Text="[Initializing]"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <MediaElement x:Name="animatedHelp" Width="150" Height="150"
+                      Source="ControlCamera.Animated.gif" MediaEnded="OnAnimatedHelpEnded" UnloadedBehavior="Manual" LoadedBehavior="Play"/>
+            <TextBlock Text="Pinch and move hand to control camera" TextAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>

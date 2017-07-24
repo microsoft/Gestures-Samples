@@ -7,35 +7,51 @@ using System.Threading.Tasks;
 
 namespace Camera3D
 {
+    public delegate void AverageChangedHandler(Vector3 delta);
+
     public class MovingAverage
     {
-        private Queue<Vector3> _window;
-        private int _windowSize;
-        private Vector3 _currentSum = new Vector3(0, 0, 0);
+        const int DefaultWindowSize = 5; // [samples]
+        const float DefaultJumpThreshold = 50; // [mm]        
 
-        public MovingAverage(int windowSize)
+        private readonly int _windowSize;
+        private readonly float _jumpThreshold;
+
+        private Queue<Vector3> _window;
+
+        public event AverageChangedHandler AverageChanged;
+
+        public MovingAverage(int windowSize = DefaultWindowSize, float jumpThreshold = DefaultJumpThreshold)
         {            
             _window = new Queue<Vector3>(windowSize);
             _windowSize = windowSize;
+            _jumpThreshold = jumpThreshold;
         }
 
         public void AddNewSample(Vector3 value)
         {
-            _window.Enqueue(value);
-            _currentSum += value;
+            var previousAverage = CurrentAverage();
+
+            if ((value - previousAverage).TwoNorm() > _jumpThreshold)
+            {
+                // filter jump - flush the queue and start over averaging
+                _window.Clear();
+                _window.Enqueue(value);
+                return;
+            }
+
+            _window.Enqueue(value);            
             if (_window.Count > _windowSize)
             {
-                _currentSum -= _window.Dequeue();
+                _window.Dequeue();
             }
+
+            var currentAverage = CurrentAverage();
+
+            AverageChanged?.Invoke(currentAverage - previousAverage);
         }
 
-        public void Flush()
-        {
-            _window.Clear();
-            _currentSum = new Vector3(0, 0, 0);
-        }
-
-        public Vector3 CurrentAverage => _currentSum * (1 / (float)Math.Max(_window.Count, 1));
+        private Vector3 CurrentAverage() => _window.Any() ? _window.Aggregate((v1, v2) => v1 + v2) * (1f / _window.Count) : new Vector3(0, 0, 0);
     }
 }
 

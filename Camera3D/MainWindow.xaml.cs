@@ -27,15 +27,10 @@ namespace Camera3D
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int MovingAverageWindowSize = 5; // [samples]
-        const float PalmPositionJumpThreshold = 50; // [mm]
-
-        private Random _rand = new Random();
         private GesturesServiceEndpoint _gesturesService;
         private Gesture _cameraPinch;
 
         private MovingAverage _movingAverage;
-        private Vector3 _lastAveragePosition = new Vector3(0, 0, 0);
 
         private SphericalCamera _sphericalCamera;
 
@@ -62,29 +57,11 @@ namespace Camera3D
             await _gesturesService.RegisterGesture(_cameraPinch);
 
             // auxiliary classes to control the camera motion
-            _movingAverage = new MovingAverage(MovingAverageWindowSize);
+            _movingAverage = new MovingAverage();
             _sphericalCamera = new SphericalCamera(Camera, Dispatcher);
+            _movingAverage.AverageChanged += delta => _sphericalCamera.UpdateCamera(delta);
         }
 
-        private void OnSekeltonReady(object sender, HandSkeletonsReadyEventArgs e)
-        {
-            var currentPosition = e.DefaultHandSkeleton.PalmPosition;
-
-            // filter out jumps in palm location
-            if ((currentPosition - _movingAverage.CurrentAverage).TwoNorm() > PalmPositionJumpThreshold)
-            {
-                _movingAverage.Flush();
-                _movingAverage.AddNewSample(currentPosition);
-                _lastAveragePosition = currentPosition;
-                return;
-            }
-
-            _movingAverage.AddNewSample(currentPosition);
-            var currentAveragePosition = _movingAverage.CurrentAverage;
-            var diff = currentAveragePosition - _lastAveragePosition;
-            _lastAveragePosition = currentAveragePosition;
-
-            _sphericalCamera.UpdateCamera(diff);
-        }
+        private void OnSekeltonReady(object sender, HandSkeletonsReadyEventArgs e) => _movingAverage.AddNewSample(e.DefaultHandSkeleton.PalmPosition);
     }
 }

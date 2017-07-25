@@ -15,13 +15,13 @@ namespace Microsoft.Gestures.Samples.Camera3D
         const float DolllyCoefficient = 1 / 8f;
 
         private Dispatcher _dispatcher;
-        private PerspectiveCamera _camera;
+        private ProjectionCamera _camera;
 
         private double _r; 
         private double _horizontalAngle; // [radians], _horizontalAngle = 0 ↔ positive x-axis, _horizontalAngle = π ↔ negative x-axis
         private double _verticalAngle;   // [radians], _verticalAngle = 0 ↔ positive z-axis, _verticalAngle = π ↔ negative x-axis
 
-        public SphericalCamera(PerspectiveCamera camera, Dispatcher dispatcher)
+        public SphericalCamera(ProjectionCamera camera, Dispatcher dispatcher)
         {
             _dispatcher = dispatcher;
             _camera = camera;

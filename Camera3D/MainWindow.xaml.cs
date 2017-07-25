@@ -43,13 +43,16 @@ namespace Microsoft.Gestures.Samples.Camera3D
 
         private async void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            // define the gesture we will be using to rotate the object
+            // In XAML, we have specified a 3D scene containing a cube. We would like to use our hand to control the camera in this scene.
+            // The following gesture subscribes to the hand skeleton stream whenever our hand forms the pinch pose. The information in 
+            // the skeleton stream will be used to move the camera.
             var pinchClose = new PinchPose("PinchClosePose", pinchSpread: false);
             pinchClose.Triggered += (s, args) => _gesturesService.RegisterToSkeleton(OnSekeltonReady);
+
             _cameraPinch = new Gesture("CameraPinch", new PinchPose("PinchOpenPose", pinchSpread: true), 
                                                       pinchClose, 
                                                       new PinchPose("PinchReleasePose", pinchSpread: true));
-            _cameraPinch.Triggered += (s, arg) => _gesturesService.UnregisterFromSkeleton();
+            _cameraPinch.IdleTriggered += (s, arg) => _gesturesService.UnregisterFromSkeleton();
 
             // connect to the Gestures Service and register the gesture we've defined
             _gesturesService = GesturesServiceEndpointFactory.Create();
@@ -57,8 +60,10 @@ namespace Microsoft.Gestures.Samples.Camera3D
             await _gesturesService.ConnectAsync();
             await _gesturesService.RegisterGesture(_cameraPinch);
 
-            // auxiliary classes to control the camera motion
+            // Whenever the pinch pose is performed, we would like to translate hand motion to camera motion. Because the palm position 
+            // values in the skeleton stream contain some jitter, we smooth them using a moving-average window.
             _movingAverage = new MovingAverage();
+            // the smoothed (average) values are used to rotate the camera.
             _sphericalCamera = new SphericalCamera(Camera, Dispatcher);
             _movingAverage.AverageChanged += delta => _sphericalCamera.UpdateCamera(delta);
         }

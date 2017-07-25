@@ -30,7 +30,7 @@ namespace Microsoft.Gestures.Samples.Camera3D
         private GesturesServiceEndpoint _gesturesService;
         private Gesture _cameraPinch;
 
-        private MovingAverage _movingAverage;
+        private PalmSmoother _palmSmoother;
 
         private SphericalCamera _sphericalCamera;
 
@@ -41,34 +41,37 @@ namespace Microsoft.Gestures.Samples.Camera3D
             Closed += (s, args) => _gesturesService.Dispose();
         }
 
-        private async void WindowLoaded(object sender, RoutedEventArgs e)
+        private async void WindowLoaded(object sender, RoutedEventArgs windowLoadedArgs)
         {
             // In XAML, we have specified a 3D scene containing a cube. We would like to use our hand to control the camera in this scene.
             // The following gesture subscribes to the hand skeleton stream whenever our hand forms the pinch pose. The information in 
             // the skeleton stream will be used to move the camera.
-            var pinchClose = new PinchPose("PinchClosePose", pinchSpread: false);
-            pinchClose.Triggered += (s, args) => _gesturesService.RegisterToSkeleton(OnSekeltonReady);
 
+            // Data flow outline:
+            // [GestureServiceEndpoint]-----Skeleton----->[PalmSmoother]-----SmoothedPositionDelta----->[SphericalCamera]
+
+            // We would like to translate hand motion to camera motion. Because the palm position 
+            // values in the skeleton stream contain some jitter, we smooth them (using a moving-average window).
+            _palmSmoother = new PalmSmoother();
+
+            // Define the gesture so that when the hand forms a pinch pose register to the skeleton stream and pass it to the palm smoother.
+            var pinchClose = new PinchPose("PinchClosePose", pinchSpread: false);
+            pinchClose.Triggered += (s, args) => _gesturesService.RegisterToSkeleton((s1, args1) => _palmSmoother.Smooth(args1.DefaultHandSkeleton));
             _cameraPinch = new Gesture("CameraPinch", new PinchPose("PinchOpenPose", pinchSpread: true), 
                                                       pinchClose, 
                                                       new PinchPose("PinchReleasePose", pinchSpread: true));
-            _cameraPinch.IdleTriggered += (s, arg) => _gesturesService.UnregisterFromSkeleton();
+            _cameraPinch.IdleTriggered += (s, args) => _gesturesService.UnregisterFromSkeleton();
 
-            // connect to the Gestures Service and register the gesture we've defined
+            // The smoothed palm position is used to rotate the camera.
+            _sphericalCamera = new SphericalCamera(Camera, Dispatcher);
+            _palmSmoother.SmoothedPositionChanged += (s, args) => _sphericalCamera.UpdateCamera(args.SmoothedPositionDelta);
+
+            // Connect to the Gestures Service and register the gesture we've defined
             _gesturesService = GesturesServiceEndpointFactory.Create();
             _gesturesService.StatusChanged += (s, arg) => Dispatcher.Invoke(() => GesturesServiceStatus.Text = $"[{arg.Status}]");
             await _gesturesService.ConnectAsync();
             await _gesturesService.RegisterGesture(_cameraPinch);
-
-            // Whenever the pinch pose is performed, we would like to translate hand motion to camera motion. Because the palm position 
-            // values in the skeleton stream contain some jitter, we smooth them using a moving-average window.
-            _movingAverage = new MovingAverage();
-            // the smoothed (average) values are used to rotate the camera.
-            _sphericalCamera = new SphericalCamera(Camera, Dispatcher);
-            _movingAverage.AverageChanged += delta => _sphericalCamera.UpdateCamera(delta);
         }
-
-        private void OnSekeltonReady(object sender, HandSkeletonsReadyEventArgs e) => _movingAverage.AddNewSample(e.DefaultHandSkeleton.PalmPosition);
 
         private void OnAnimatedHelpEnded(object sender, RoutedEventArgs e)
         {

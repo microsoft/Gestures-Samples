@@ -4,7 +4,7 @@ This repository contains C# code samples demonstrating how to use the [Project P
 
 # Code Samples
 
-After cloning this repository, please open the [Microsoft.Gestures.Samples](Microsoft.Gestures.Samples.sln) soulution in Visual Studio. You will find 5 projects in this solution. Each project is a stand-alone code sample that can be built and run independently of the other projects. The table below lists the samples ordered from the least to the most advanced:
+After cloning this repository, please open the [Microsoft.Gestures.Samples](Microsoft.Gestures.Samples.sln) soulution in Visual Studio. You will find 6 projects in this solution. Each project is a stand-alone code sample that can be built and run independently of the other projects. The table below lists the samples ordered from the least to the most advanced:
 
 Sample|Use case|What will you learn?
 ------|-----------|--------------------

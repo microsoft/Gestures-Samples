@@ -73,8 +73,8 @@ MonoBehaviour:
     y: 44
     width: 175
     height: 155
-  ShowRestartButton: 1
-  ShowExitButton: 1
+  ShowRestartButton: 0
+  ShowExitButton: 0
   RestartButtonText: Restart
   RestartButtonBounds:
     serializedVersion: 2

@@ -14,6 +14,7 @@ Sample|Use case|What will you learn?
 [Camera3D](Camera3D) | Manipulate camera in a 3D scene | Create a simple [gesture](https://docs.microsoft.com/en-us/gestures/index#gesture) and consume hand skeleton stream
 [GesturesPowerPointPlugin](GesturesPowerPointPlugin) (requires [Office Tools for Visual Studio](https://www.visualstudio.com/vs/office-tools/))| Create and present a slideshow in PowerPoint using gestures | Create multiple simple [gestures](https://docs.microsoft.com/en-us/gestures/index#gesture) and wire them to activate various PowerPoint features
 [CarGestures](CarGestures) | Control a virtual car's infotainment-system with gestures | Create a complete WPF UI with multiple [gestures](https://docs.microsoft.com/en-us/gestures/index#gesture) of varying complexity
+[Unity Tutorial Project](Unity/GesturesTutorial) | Follow our [Unity tutorial](https://docs.microsoft.com/en-us/gestures/unity-tutorials-introduction) | Integrate gestures and hand-skeleton input in your Unity games
 
 # Contributing
 

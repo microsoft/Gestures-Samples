@@ -462,6 +462,10 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
     UNet: 1
   cloudProjectId: e13d75cf-b75c-4413-a557-2838bdcf0687
   projectName: GesturesTutorial

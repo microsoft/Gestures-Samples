@@ -155,7 +155,7 @@ public class HandCursor : MonoBehaviour
             var plane = new Plane(Camera.main.transform.forward, _lastCursorWorldPos);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
             plane.Raycast(ray, out _initDistanceFromCamera);
-            _initDistanceFromCamera *= 1 + Input.mouseScrollDelta.y / 10;
+            if (IsMouseMode) _initDistanceFromCamera *= 1 + Input.mouseScrollDelta.y / 10;
             var currentCursorWorldPos = ray.GetPoint(_initDistanceFromCamera);
             _hoveredGO.transform.position += currentCursorWorldPos - _lastCursorWorldPos;
             _lastCursorWorldPos = currentCursorWorldPos;

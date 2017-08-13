@@ -8,6 +8,7 @@ public class HandCursor : MonoBehaviour
     private bool _isGrabbing = false;
     private Vector3 _lastCursorWorldPos;
     private float _initDistanceFromCamera;
+    private float _lastSkeletonDepth;
 
     [Tooltip("Set this to true if you wish to use the mouse input instead of the hand skeleton input.")]
     public bool IsMouseMode = true;
@@ -36,16 +37,34 @@ public class HandCursor : MonoBehaviour
     [Tooltip("A layer mask to filter hover-able game objects")]
     public LayerMask Mask = -1;
 
-    private Vector3 GetPalmWorldPosition()
+    private float GetSkeletonDepth()
     {
-        // Chapter 1.b Replace mouse screen position with Microsoft.Gestures palm position.
+        // Step 1.9: Replace mouse position with palm position.
         var skeleton = GesturesManager.Instance.StableSkeletons[Hand.RightHand];
         if (skeleton == null)
-            return Vector2.zero;
+        {
+            return 0;
+        }
 
         // Convert PalmPosition to screen space
-        var palmCamPos = Vector3.Scale(skeleton.PalmPosition, PalmUnitsScale) + PalmUnitsOffset;
-        return Camera.main.transform.TransformPoint(palmCamPos);
+        return (Vector3.Scale(skeleton.PalmPosition, PalmUnitsScale) + PalmUnitsOffset).z;
+    }
+
+    private float GetCursorDepthDelta()
+    {
+        float delta;
+        if (IsMouseMode)
+        {
+            delta = Input.mouseScrollDelta.y / 10;
+        }
+        else
+        {
+            var currentDepth = GetSkeletonDepth();
+            delta = (currentDepth - _lastSkeletonDepth) / 10;
+            _lastSkeletonDepth = currentDepth;
+        }
+
+        return Mathf.Max(Mathf.Min(delta, 1), -1);
     }
 
     private Vector3 GetCursorScreenPosition()
@@ -100,6 +119,7 @@ public class HandCursor : MonoBehaviour
         _initDistanceFromCamera = Camera.main.transform.InverseTransformPoint(_hoveredGO.transform.position).magnitude;
         var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
         _lastCursorWorldPos = ray.GetPoint(_initDistanceFromCamera);
+        _lastSkeletonDepth = GetSkeletonDepth();
     }
 
     public void StopGrab()
@@ -155,7 +175,7 @@ public class HandCursor : MonoBehaviour
             var plane = new Plane(Camera.main.transform.forward, _lastCursorWorldPos);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
             plane.Raycast(ray, out _initDistanceFromCamera);
-            if (IsMouseMode) _initDistanceFromCamera *= 1 + Input.mouseScrollDelta.y / 10;
+            _initDistanceFromCamera *= 1 + GetCursorDepthDelta();
             var currentCursorWorldPos = ray.GetPoint(_initDistanceFromCamera);
             _hoveredGO.transform.position += currentCursorWorldPos - _lastCursorWorldPos;
             _lastCursorWorldPos = currentCursorWorldPos;

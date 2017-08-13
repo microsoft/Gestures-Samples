@@ -97,7 +97,7 @@ public class HandCursor : MonoBehaviour
 
         _isGrabbing = true;
 
-        _initDistanceFromCamera = Camera.main.transform.InverseTransformPoint(_hoveredGO.transform.position).z;
+        _initDistanceFromCamera = Camera.main.transform.InverseTransformPoint(_hoveredGO.transform.position).magnitude;
         var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
         _lastCursorWorldPos = ray.GetPoint(_initDistanceFromCamera);
     }
@@ -151,8 +151,10 @@ public class HandCursor : MonoBehaviour
         }
 
         if (_isGrabbing)
-        {
+        {            
+            var plane = new Plane(Camera.main.transform.forward, _lastCursorWorldPos);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
+            plane.Raycast(ray, out _initDistanceFromCamera);
             var currentCursorWorldPos = ray.GetPoint(_initDistanceFromCamera);
             _hoveredGO.transform.position += currentCursorWorldPos - _lastCursorWorldPos;
             _lastCursorWorldPos = currentCursorWorldPos;

@@ -6,7 +6,6 @@ public class HandCursor : MonoBehaviour
 {
     private GameObject _hoveredGO;
     private bool _isGrabbing = false;
-    private Vector3 _lastCursorWorldPos;
     private float _lastPalmDepth;
 
     [Tooltip("Set this to true if you wish to use the mouse input instead of the hand skeleton input.")]
@@ -43,8 +42,6 @@ public class HandCursor : MonoBehaviour
         {
             return Vector3.zero;
         }
-
-        // Convert PalmPosition to screen space
         return Vector3.Scale(skeleton.PalmPosition, PalmUnitsScale) + PalmUnitsOffset;
     }
 
@@ -106,10 +103,6 @@ public class HandCursor : MonoBehaviour
             return;
 
         _isGrabbing = true;
-
-        var distanceFromCamera = Camera.main.transform.InverseTransformPoint(_hoveredGO.transform.position).magnitude;
-        var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
-        _lastCursorWorldPos = ray.GetPoint(distanceFromCamera);
         _lastPalmDepth = GetPalmCameraPosition().z;
     }
 
@@ -163,14 +156,12 @@ public class HandCursor : MonoBehaviour
 
         if (_isGrabbing)
         {            
-            var plane = new Plane(Camera.main.transform.forward, _lastCursorWorldPos);
+            var plane = new Plane(Camera.main.transform.forward, _hoveredGO.transform.position);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
             float distanceFromCamera;
             plane.Raycast(ray, out distanceFromCamera);
             distanceFromCamera *= 1 + GetCursorDepthDelta();
-            var currentCursorWorldPos = ray.GetPoint(distanceFromCamera);
-            _hoveredGO.transform.position += currentCursorWorldPos - _lastCursorWorldPos;
-            _lastCursorWorldPos = currentCursorWorldPos;
+            _hoveredGO.transform.position = ray.GetPoint(distanceFromCamera);
         }
     }
 

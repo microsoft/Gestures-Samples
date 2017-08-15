@@ -472,6 +472,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
         type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
       propertyPath: SegmentTriggers.Array.data[0].OnTrigger.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -605,6 +610,16 @@ Prefab:
         type: 2}
       propertyPath: SegmentTriggers.Array.data[1].OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 16bac9c4404541043b47138d44c99a49, type: 2}

@@ -50,10 +50,12 @@ public class HandCursor : MonoBehaviour
         float delta;
         if (IsMouseMode)
         {
+            // Step #.#: return mouse scroll delta
             delta = Input.mouseScrollDelta.y / 10;
         }
         else
         {
+            // Step #.#: return palm depth delta
             var currentDepth = GetPalmCameraPosition().z;
             delta = (currentDepth - _lastPalmDepth) / 10;
             _lastPalmDepth = currentDepth;
@@ -160,6 +162,7 @@ public class HandCursor : MonoBehaviour
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
             float distanceFromCamera;
             plane.Raycast(ray, out distanceFromCamera);
+            // Step #.#: scale depth according to cursor's depth delta
             distanceFromCamera *= 1 + GetCursorDepthDelta();
             _hoveredGO.transform.position = ray.GetPoint(distanceFromCamera);
         }

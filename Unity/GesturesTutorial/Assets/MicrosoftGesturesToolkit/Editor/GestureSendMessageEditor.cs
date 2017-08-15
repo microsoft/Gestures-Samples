@@ -49,7 +49,8 @@ namespace Microsoft.Gestures.Toolkit
             var stockGesture = trigger.Gesture;
 
             // Gesture Definition
-            isCustomGesture = EditorGUILayout.Toggle("Use XAML", isCustomGesture);
+            var text = new[] { "Stock Gesture", "XAML Gesture" };
+            isCustomGesture = (GUILayout.SelectionGrid(isCustomGesture ? 1 : 0, text, 2, EditorStyles.radioButton) == 1);
             var gestureSegments = new string[0];
 
             if (isCustomGesture)

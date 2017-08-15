@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4847299822543124}
   - component: {fileID: 114122527269586888}
   - component: {fileID: 114649675745063242}
+  - component: {fileID: 114169907323126896}
   m_Layer: 0
   m_Name: GesturesManager
   m_TagString: Untagged
@@ -58,9 +59,19 @@ MonoBehaviour:
   LogAllMessages: 0
   LogSkeletonEvents: 0
   LogGesturesEvents: 0
-  ProcessName: UnityApp
-  ProcessId: 11230
   IsSuspendEventOnLostFocus: 1
+--- !u!114 &114169907323126896
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1793397470703464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1839303370, guid: e350590ab9b2bd14791da93aed6ece17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovingAverageWindowSize: 5
 --- !u!114 &114649675745063242
 MonoBehaviour:
   m_ObjectHideFlags: 1

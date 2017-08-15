@@ -84,7 +84,7 @@ Material:
       second: 0
     - first:
         name: _Fade
-      second: 2.16
+      second: 1
     - first:
         name: _GlossMapScale
       second: 1
@@ -105,7 +105,7 @@ Material:
       second: 1
     - first:
         name: _Outline
-      second: 0.199
+      second: 0.25
     - first:
         name: _Parallax
       second: 0.02

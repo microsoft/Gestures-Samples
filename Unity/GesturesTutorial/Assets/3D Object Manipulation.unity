@@ -205,7 +205,7 @@ MonoBehaviour:
   CursorSize: {x: 24, y: 24}
   CursorTint: {r: 1, g: 0, b: 0, a: 1}
   GrabCursorTint: {r: 0, g: 1, b: 0, a: 1}
-  PalmUnitsScale: {x: 0.1, y: 0.1, z: -0.1}
+  PalmUnitsScale: {x: -0.1, y: 0.1, z: -0.1}
   PalmUnitsOffset: {x: 0, y: 0, z: 55}
   HighlightMaterial: {fileID: 2100000, guid: c8d13fffa663213408b34214df2e7e95, type: 2}
   Mask:
@@ -619,6 +619,16 @@ Prefab:
     - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
         type: 2}
       propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: SegmentTriggers.Array.data[0].OnTrigger.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: SegmentTriggers.Array.data[0].OnTrigger.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []

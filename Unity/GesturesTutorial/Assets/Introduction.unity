@@ -163,6 +163,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
         type: 2}
+      propertyPath: SegmentTriggers.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
       propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -217,7 +222,37 @@ Prefab:
         type: 2}
       propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 544187544}
+      objectReference: {fileID: 544187546}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: SegmentTriggers.Array.data[0].OnTrigger.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CreateRandomPrimitive
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695663211870218, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_Name
+      value: CreateRandomPrimitiveGesture
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
   m_IsPrefabParent: 0
@@ -389,6 +424,87 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 646d087b72693e246b7dc321f9e531e7, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1893671937
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4933650407029454, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695663211870218, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
+      propertyPath: m_Name
+      value: DestroyAllPrimitivesGesture
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: Gesture
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 544187546}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DestroyAllPrimitives
+      objectReference: {fileID: 0}
+    - target: {fileID: 114461902136892310, guid: 16bac9c4404541043b47138d44c99a49,
+        type: 2}
+      propertyPath: OnTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 16bac9c4404541043b47138d44c99a49, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1975296266
 Prefab:

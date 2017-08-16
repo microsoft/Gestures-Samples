@@ -13,11 +13,25 @@ public class PrimitiveFactory : MonoBehaviour
         primitive.GetComponent<Renderer>().material.color = Random.ColorHSV();
     }
 
+    public void DestroyAllPrimitives()
+    {
+        var allPrimitives = FindObjectsOfType<Rigidbody>();
+
+        foreach (var primitive in allPrimitives)
+        {
+            Destroy(primitive.gameObject);
+        }
+    }
+
     public void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             CreateRandomPrimitive();
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            DestroyAllPrimitives();
         }
     }
 }

@@ -201,16 +201,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsMouseMode: 0
-  CursorImage: {fileID: 2800000, guid: 2038bf44460ace04485f590dcf7baee3, type: 3}
+  CursorImage: {fileID: 2800000, guid: 5be9a21623f4c2546af9724a72235ed7, type: 3}
   CursorSize: {x: 24, y: 24}
   CursorTint: {r: 1, g: 0, b: 0, a: 1}
-  GrabCursorTint: {r: 0, g: 1, b: 0, a: 1}
   PalmUnitsScale: {x: -0.1, y: 0.1, z: -0.1}
   PalmUnitsOffset: {x: 0, y: 0, z: 55}
   HighlightMaterial: {fileID: 2100000, guid: c8d13fffa663213408b34214df2e7e95, type: 2}
   Mask:
     serializedVersion: 2
     m_Bits: 4294967295
+  GrabCursorTint: {r: 0, g: 1, b: 0, a: 1}
 --- !u!4 &217753085
 Transform:
   m_ObjectHideFlags: 0

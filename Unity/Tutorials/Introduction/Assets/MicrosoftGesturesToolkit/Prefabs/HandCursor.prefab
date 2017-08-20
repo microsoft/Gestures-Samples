@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1727418399872218}
+  m_IsPrefabParent: 1
+--- !u!1 &1727418399872218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4747572550287516}
+  - component: {fileID: 114100338936866786}
+  - component: {fileID: 114347054949352462}
+  - component: {fileID: 114781421236916898}
+  m_Layer: 0
+  m_Name: HandCursor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4747572550287516
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1727418399872218}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114100338936866786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1727418399872218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f318c89017e9d3b448e84b3d086a669b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hand: 1
+  CursorIcon: {fileID: 2800000, guid: 141157701b12c374fb2c659fa89b242b, type: 3}
+  CursorSize: {x: 50, y: 50}
+  UseStabalizer: 1
+  UnitsScale: {x: -0.15, y: 0.15, z: -0.1}
+  UnitsOffset: {x: 0, y: 0, z: 70}
+  ShowIcon: 1
+  Trail: {fileID: 198594723493422280, guid: 51f106cd8f4958a4aa1a135d45ba1716, type: 2}
+  TrailZ: 1
+--- !u!114 &114347054949352462
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1727418399872218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110db7cc04a6efa45b2d7700d3764aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsHoverHighlighted: 1
+  HoveredColor: {r: 0.07352942, g: 0.734, b: 1, a: 1}
+  SelectedColor: {r: 1, g: 0, b: 0, a: 1}
+  HighlightWidth: 0.2
+  OutlineMaterial: {fileID: 2100000, guid: c8d13fffa663213408b34214df2e7e95, type: 2}
+  Mask:
+    serializedVersion: 2
+    m_Bits: 4294967263
+--- !u!114 &114781421236916898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1727418399872218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43690dab6578eb14fb460914cb320a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TranslationSensitivity: {x: -0.3, y: 0.2, z: 0.1}
+  InertiaScale: {x: 50, y: 50, z: 50}
+  TranslateOnGrabThresholdCm: 0.0001

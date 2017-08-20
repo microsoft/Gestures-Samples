@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/3D Object Manipulation (Hand).unity
+  isLoaded: 1
+  isActive: 1

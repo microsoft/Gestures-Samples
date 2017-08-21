@@ -30,11 +30,11 @@ public class Cursor : MonoBehaviour
     public Vector3 PalmUnitsScale = new Vector3(-.1f, .1f, -.1f);
 
     [Tooltip("Offsets the palm position vector in camera space.")]
-    public Vector3 PalmUnitsOffset = new Vector3(0f, 0f, 70f); // when using Kinect, replace with: new Vector3(0f, 0f, 120f);
+    public Vector3 PalmUnitsOffset = new Vector3(0f, 0f, 70f); // if using Kinect, replace with: new Vector3(0f, 0f, 120f);
 
     private Vector3 GetPalmCameraPosition()
     {
-        // Step 2.2: Convert palm position from depth-camera space to Main-Camera space
+        // Step 1.4: Convert palm position from depth-camera space to Main-Camera space
         var skeleton = GesturesManager.Instance.StableSkeletons[Hand.RightHand];
         if (skeleton == null)
         {
@@ -45,7 +45,7 @@ public class Cursor : MonoBehaviour
 
     private Vector3 GetCursorScreenPosition()
     {
-        // Step 2.2: Replace mouse position with palm position.
+        // Step 1.4: Replace mouse position with palm position.
         var palmCameraPosition = GetPalmCameraPosition();
         var palmWorldPosition = Camera.main.transform.TransformPoint(palmCameraPosition);
         var palmScreenPosition = (Vector2)Camera.main.WorldToScreenPoint(palmWorldPosition);
@@ -54,7 +54,7 @@ public class Cursor : MonoBehaviour
 
     private GameObject GetHoveredObject()
     {
-        // Step 2.2 Cast a ray from camera towards the cursor.
+        // Step 2.2: Cast a ray from camera towards the cursor.
         var cursorPosition = GetCursorScreenPosition();
         var ray = Camera.main.ScreenPointToRay(cursorPosition);
         RaycastHit hit;
@@ -68,7 +68,7 @@ public class Cursor : MonoBehaviour
 
     private float GetCursorDepthDelta()
     {
-        // Step 3.2: return palm depth delta
+        // Step 3.1: Compute palm depth delta
         var currentDepth = GetPalmCameraPosition().z;
         var delta = currentDepth - _lastPalmDepth;
         _lastPalmDepth = currentDepth;
@@ -78,14 +78,14 @@ public class Cursor : MonoBehaviour
 
     public void StartGrab()
     {
-        // Step 3.3:   Begin grab mode. 
+        // Step 3.3:   Start grab mode. 
         if (!_hoveredGameObject)
         {
             return;
         }
 
         _isGrabbing = true;
-        // step 5.1: save last value of hand depth
+        // step 3.1: save last value of hand depth
         _lastPalmDepth = GetPalmCameraPosition().z;
     }
 
@@ -97,43 +97,51 @@ public class Cursor : MonoBehaviour
 
     private void OnEnable()
     {
-        // Step 2.1: Register to skeleton events
+        // Step 1.3: Register to skeleton events
         GesturesManager.Instance.RegisterToSkeleton();
     }
 
     private void OnDisable()
     {
-        // Step 2.1: Unregister from skeleton events
+        // Step 1.3: Unregister from skeleton events
         GesturesManager.Instance.UnregisterFromSkeleton();
     }
 
     private void Update()
     {
-        // Step 2.2: Add highlight material to hovered object
+        // Step 2.2: Add highlighting material to hovered object
         // Step 3.4: Do not change hovered object when grabbing
         if (HighlightMaterial && !_isGrabbing)
         {
             // Stop highlighting old hover object
             if (_hoveredGameObject)
+            {
                 _hoveredGameObject.RemoveMaterial(HighlightMaterial);
+            }
 
             // Raycast and find object under cursor
             _hoveredGameObject = GetHoveredObject();
 
-            // Add highlight material to hovered object
+            // Add highlighting material to hovered object
             if (_hoveredGameObject)
+            {
                 _hoveredGameObject.AppendMaterial(HighlightMaterial);
+            }
         }
 
-        // Start grabbing object when left mouse button is down
+        // Step 3.4: Start grabbing object when left mouse button is down
         if (Input.GetMouseButtonDown(0))
+        {
             StartGrab();
+        }
 
-        // Stop grabbing object when left mouse button is up
+        // Step 3.4: Stop grabbing object when left mouse button is up
         if (Input.GetMouseButtonUp(0))
+        {
             StopGrab();
+        }
 
-        // Handle motion
+        // Step 3.4: Handle motion
         if (_isGrabbing)
         {
             var plane = new Plane(Camera.main.transform.forward, _hoveredGameObject.transform.position);

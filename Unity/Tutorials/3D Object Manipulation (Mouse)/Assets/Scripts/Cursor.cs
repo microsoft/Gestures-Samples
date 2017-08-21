@@ -33,7 +33,7 @@ public class Cursor : MonoBehaviour
 
     private GameObject GetHoveredObject()
     {
-        // Step 2.2 Cast a ray from camera towards the cursor.
+        // Step 2.2: Cast a ray from camera towards the cursor.
         var cursorPosition = GetCursorScreenPosition();
         var ray = Camera.main.ScreenPointToRay(cursorPosition);
         RaycastHit hit;
@@ -53,7 +53,7 @@ public class Cursor : MonoBehaviour
 
     public void StartGrab()
     {
-        // Step 3.3:   Begin grab mode. 
+        // Step 3.3:   Start grab mode. 
         if (!_hoveredGameObject)
         {
             return;
@@ -70,31 +70,39 @@ public class Cursor : MonoBehaviour
 
     private void Update()
     {
-        // Step 2.2: Add highlight material to hovered object
+        // Step 2.2: Add highlighting material to hovered object
         // Step 3.4: Do not change hovered object when grabbing
         if (HighlightMaterial && !_isGrabbing)
         {
             // Stop highlighting old hover object
             if (_hoveredGameObject)
+            {
                 _hoveredGameObject.RemoveMaterial(HighlightMaterial);
+            }
 
             // Raycast and find object under cursor
             _hoveredGameObject = GetHoveredObject();
 
-            // Add highlight material to hovered object
+            // Add highlighting material to hovered object
             if (_hoveredGameObject)
+            {
                 _hoveredGameObject.AppendMaterial(HighlightMaterial);
+            }
         }
 
-        // Start grabbing object when left mouse button is down
+        // Step 3.4: Start grabbing object when left mouse button is down
         if (Input.GetMouseButtonDown(0))
+        {
             StartGrab();
+        }
 
-        // Stop grabbing object when left mouse button is up
+        // Step 3.4: Stop grabbing object when left mouse button is up
         if (Input.GetMouseButtonUp(0))
+        {
             StopGrab();
+        }
 
-        // Handle motion
+        // Step 3.4: Handle motion
         if (_isGrabbing)
         {
             var plane = new Plane(Camera.main.transform.forward, _hoveredGameObject.transform.position);

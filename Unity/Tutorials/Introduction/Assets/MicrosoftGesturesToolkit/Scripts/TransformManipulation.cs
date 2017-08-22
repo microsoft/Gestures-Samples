@@ -30,7 +30,7 @@ namespace Microsoft.Gestures.Toolkit
         private Queue<Vector3> _averageVelocity = new Queue<Vector3>();
         private bool _isTranslateCrossedThreshold = false;
 
-        public Vector3 TranslationSensitivity = new Vector3(.3f, .2f, .1f);
+        public Vector3 TranslationSensitivity = new Vector3(-.3f, .2f, .1f);
         public Vector3 InertiaScale = Vector3.one * 30;
         public float TranslateOnGrabThresholdCm = 0.015f;
 

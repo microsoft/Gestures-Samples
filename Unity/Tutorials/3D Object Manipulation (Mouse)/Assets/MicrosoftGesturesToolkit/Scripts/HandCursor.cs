@@ -9,9 +9,6 @@ namespace Microsoft.Gestures.Toolkit
     {
         private ParticleSystem _trail;
 
-        [Tooltip("Choose which hand controls the cursor.")]
-        public Hand Hand = Hand.RightHand;
-
         [Tooltip("The cursor image that would be displayed on screen.")]
         public Texture2D CursorIcon;
 
@@ -56,7 +53,7 @@ namespace Microsoft.Gestures.Toolkit
         
         private void Update()
         {
-            var skeleton = UseStabalizer ? GesturesManager.Instance.StableSkeletons[Hand]: GesturesManager.Instance.Skeletons[Hand];
+            var skeleton = UseStabalizer ? GesturesManager.Instance.SmoothDefaultSkeleton : GesturesManager.Instance.LatestDefaultSkeleton;
 
             if (skeleton == null) return;
 

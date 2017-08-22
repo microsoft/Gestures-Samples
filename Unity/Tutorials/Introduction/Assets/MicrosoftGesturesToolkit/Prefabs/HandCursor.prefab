@@ -53,7 +53,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f318c89017e9d3b448e84b3d086a669b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hand: 1
   CursorIcon: {fileID: 2800000, guid: 141157701b12c374fb2c659fa89b242b, type: 3}
   CursorSize: {x: 50, y: 50}
   UseStabalizer: 1

@@ -35,7 +35,7 @@ public class Cursor : MonoBehaviour
     private Vector3 GetPalmCameraPosition()
     {
         // Convert palm position from depth-camera space to Main-Camera space
-        var skeleton = GesturesManager.Instance.StableSkeletons[Hand.RightHand];
+        var skeleton = GesturesManager.Instance.SmoothDefaultSkeleton;
         if (skeleton == null)
         {
             return Vector3.zero;

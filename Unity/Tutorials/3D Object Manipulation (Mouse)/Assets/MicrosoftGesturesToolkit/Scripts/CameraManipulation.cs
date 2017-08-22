@@ -22,7 +22,7 @@ namespace Microsoft.Gestures.Toolkit
 
         private void RegisterToSkeleton()
         {
-            if (!GesturesManager.Instance.IsSkeletonRegistered && GesturesManager.Instance.IsConnected)
+            if (GesturesManager.Instance && !GesturesManager.Instance.IsSkeletonRegistered)
             {
                 GesturesManager.Instance.RegisterToSkeleton();
             }
@@ -34,14 +34,14 @@ namespace Microsoft.Gestures.Toolkit
         private void OnGesturesManager_SkeletonReady(object sender, SkeletonEventArgs e)
         {
             var manager = GesturesManager.Instance;
-            var skeleton = UseStabilizer ? GesturesManager.Instance.SkeletonStabilizers[Hand].AverageSkeleton : e.Skeleton;
+    
             if (_previousSkeleton != null)
             {
-                var deltaPos = skeleton.PalmPosition - _previousSkeleton.PalmPosition;
+                var deltaPos = e.Skeleton.PalmPosition - _previousSkeleton.PalmPosition;
                 Tumble(deltaPos.x / (750 / TumbleSensitivity), deltaPos.y / (750 / TumbleSensitivity));
                 Dolly(deltaPos.z / (900 / DollySensitivity));
             }
-            _previousSkeleton = skeleton;
+            _previousSkeleton = e.Skeleton;
         }
 
         public void StartManipulating()
@@ -63,7 +63,7 @@ namespace Microsoft.Gestures.Toolkit
             if (GesturesManager.Instance.IsSkeletonRegistered)
             {
                 GesturesManager.Instance.SkeletonReady += OnGesturesManager_SkeletonReady;
-                _previousSkeleton = GesturesManager.Instance.SkeletonStabilizers[Hand].AverageSkeleton;
+                _previousSkeleton = GesturesManager.Instance.SmoothDefaultSkeleton;
                 _isRunning = true;
                 Debug.Log("Gesture camera manipulation started successfully.");
             }

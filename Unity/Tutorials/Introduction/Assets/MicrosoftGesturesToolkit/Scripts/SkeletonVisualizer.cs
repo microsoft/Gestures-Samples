@@ -98,7 +98,7 @@ namespace Microsoft.Gestures.Toolkit
         {
             if (e.Skeleton.Handedness != Hand) return;
 
-            var skeleton = UseStabalizer ? GesturesManager.Instance.StableSkeletons[Hand]: e.Skeleton;
+            var skeleton = UseStabalizer ? GesturesManager.Instance.SmoothDefaultSkeleton: e.Skeleton;
             var palmForward = TransformVector(skeleton.PalmOrientation);
             var palmUp = TransformVector(skeleton.PalmDirection);
 

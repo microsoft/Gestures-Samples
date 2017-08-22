@@ -27,13 +27,13 @@ public class Cursor : MonoBehaviour
 
     private Vector3 GetCursorScreenPosition()
     {
-        // Step 1.5: Return mouse screen position.
+        // Return mouse screen position.
         return Input.mousePosition;
     }
 
     private GameObject GetHoveredObject()
     {
-        // Step 2.2: Cast a ray from camera towards the cursor.
+        // Cast a ray from camera towards the cursor.
         var cursorPosition = GetCursorScreenPosition();
         var ray = Camera.main.ScreenPointToRay(cursorPosition);
         RaycastHit hit;
@@ -47,13 +47,13 @@ public class Cursor : MonoBehaviour
 
     private float GetCursorDepthDelta()
     {
-        // Step 3.6: return mouse scroll delta
+        // return mouse scroll delta
         return Input.mouseScrollDelta.y / 10;
     }
 
     public void StartGrab()
     {
-        // Step 3.3:   Start grab mode. 
+        // Start grab mode. 
         if (!_hoveredGameObject)
         {
             return;
@@ -64,14 +64,14 @@ public class Cursor : MonoBehaviour
 
     public void StopGrab()
     {
-        // Step 3.3:   Stop grab mode.
+        // Stop grab mode.
         _isGrabbing = false;
     }
 
     private void Update()
     {
-        // Step 2.2: Add highlighting material to hovered object
-        // Step 3.4: Do not change hovered object when grabbing
+        // Add highlighting material to hovered object
+        // Do not change hovered object when grabbing
         if (HighlightMaterial && !_isGrabbing)
         {
             // Stop highlighting old hover object
@@ -90,26 +90,26 @@ public class Cursor : MonoBehaviour
             }
         }
 
-        // Step 3.4: Start grabbing object when left mouse button is down
+        // Start grabbing object when left mouse button is down
         if (Input.GetMouseButtonDown(0))
         {
             StartGrab();
         }
 
-        // Step 3.4: Stop grabbing object when left mouse button is up
+        // Stop grabbing object when left mouse button is up
         if (Input.GetMouseButtonUp(0))
         {
             StopGrab();
         }
 
-        // Step 3.4: Handle motion
+        // Handle motion
         if (_isGrabbing)
         {
             var plane = new Plane(Camera.main.transform.forward, _hoveredGameObject.transform.position);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
             float distanceFromCamera;
             plane.Raycast(ray, out distanceFromCamera);
-            // Step 3.7: scale depth according to cursor's depth delta
+            // scale depth according to cursor's depth delta
             distanceFromCamera *= 1 + GetCursorDepthDelta();
             _hoveredGameObject.transform.position = ray.GetPoint(distanceFromCamera);
         }
@@ -117,7 +117,7 @@ public class Cursor : MonoBehaviour
 
     private void OnGUI()
     {
-        // Step 1.4: Draw cursor texture at the cursor's position on the screen.
+        // Draw cursor texture at the cursor's position on the screen.
         var cursorPosition = (Vector2)GetCursorScreenPosition();
 
         // Invert y direction
@@ -128,7 +128,7 @@ public class Cursor : MonoBehaviour
 
         // Change the tint color to match our cursor mode
         var originalColor = GUI.color;
-        // Step 3.2: Add a condition when setting GUI.color
+        // Add a condition when setting GUI.color
         GUI.color = _isGrabbing ? GrabCursorTint : CursorTint;
         GUI.DrawTexture(bounds, CursorImage);
 

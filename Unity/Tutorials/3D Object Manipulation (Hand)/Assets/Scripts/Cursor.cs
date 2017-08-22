@@ -34,7 +34,7 @@ public class Cursor : MonoBehaviour
 
     private Vector3 GetPalmCameraPosition()
     {
-        // Step 1.4: Convert palm position from depth-camera space to Main-Camera space
+        // Convert palm position from depth-camera space to Main-Camera space
         var skeleton = GesturesManager.Instance.StableSkeletons[Hand.RightHand];
         if (skeleton == null)
         {
@@ -45,7 +45,7 @@ public class Cursor : MonoBehaviour
 
     private Vector3 GetCursorScreenPosition()
     {
-        // Step 1.4: Replace mouse position with palm position.
+        // Replace mouse position with palm position.
         var palmCameraPosition = GetPalmCameraPosition();
         var palmWorldPosition = Camera.main.transform.TransformPoint(palmCameraPosition);
         var palmScreenPosition = (Vector2)Camera.main.WorldToScreenPoint(palmWorldPosition);
@@ -54,7 +54,7 @@ public class Cursor : MonoBehaviour
 
     private GameObject GetHoveredObject()
     {
-        // Step 2.2: Cast a ray from camera towards the cursor.
+        // Cast a ray from camera towards the cursor.
         var cursorPosition = GetCursorScreenPosition();
         var ray = Camera.main.ScreenPointToRay(cursorPosition);
         RaycastHit hit;
@@ -68,7 +68,7 @@ public class Cursor : MonoBehaviour
 
     private float GetCursorDepthDelta()
     {
-        // Step 3.1: Compute palm depth delta
+        // Compute palm depth delta
         var currentDepth = GetPalmCameraPosition().z;
         var delta = currentDepth - _lastPalmDepth;
         _lastPalmDepth = currentDepth;
@@ -78,39 +78,39 @@ public class Cursor : MonoBehaviour
 
     public void StartGrab()
     {
-        // Step 3.3:   Start grab mode. 
+        // Start grab mode. 
         if (!_hoveredGameObject)
         {
             return;
         }
 
         _isGrabbing = true;
-        // step 3.1: save last value of hand depth
+        // save last value of hand depth
         _lastPalmDepth = GetPalmCameraPosition().z;
     }
 
     public void StopGrab()
     {
-        // Step 3.3:   Stop grab mode.
+        // Stop grab mode.
         _isGrabbing = false;
     }
 
     private void OnEnable()
     {
-        // Step 1.3: Register to skeleton events
+        // Register to skeleton events
         GesturesManager.Instance.RegisterToSkeleton();
     }
 
     private void OnDisable()
     {
-        // Step 1.3: Unregister from skeleton events
+        // Unregister from skeleton events
         GesturesManager.Instance.UnregisterFromSkeleton();
     }
 
     private void Update()
     {
-        // Step 2.2: Add highlighting material to hovered object
-        // Step 3.4: Do not change hovered object when grabbing
+        // Add highlighting material to hovered object
+        // Do not change hovered object when grabbing
         if (HighlightMaterial && !_isGrabbing)
         {
             // Stop highlighting old hover object
@@ -129,26 +129,26 @@ public class Cursor : MonoBehaviour
             }
         }
 
-        // Step 3.4: Start grabbing object when left mouse button is down
+        // Start grabbing object when left mouse button is down
         if (Input.GetMouseButtonDown(0))
         {
             StartGrab();
         }
 
-        // Step 3.4: Stop grabbing object when left mouse button is up
+        // Stop grabbing object when left mouse button is up
         if (Input.GetMouseButtonUp(0))
         {
             StopGrab();
         }
 
-        // Step 3.4: Handle motion
+        // Handle motion
         if (_isGrabbing)
         {
             var plane = new Plane(Camera.main.transform.forward, _hoveredGameObject.transform.position);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
             float distanceFromCamera;
             plane.Raycast(ray, out distanceFromCamera);
-            // Step 3.7: scale depth according to cursor's depth delta
+            // scale depth according to cursor's depth delta
             distanceFromCamera *= 1 + GetCursorDepthDelta();
             _hoveredGameObject.transform.position = ray.GetPoint(distanceFromCamera);
         }
@@ -156,7 +156,7 @@ public class Cursor : MonoBehaviour
 
     private void OnGUI()
     {
-        // Step 1.4: Draw cursor texture at the cursor's position on the screen.
+        // Draw cursor texture at the cursor's position on the screen.
         var cursorPosition = (Vector2)GetCursorScreenPosition();
 
         // Invert y direction
@@ -167,7 +167,7 @@ public class Cursor : MonoBehaviour
 
         // Change the tint color to match our cursor mode
         var originalColor = GUI.color;
-        // Step 3.2: Add a condition when setting GUI.color
+        // Add a condition when setting GUI.color
         GUI.color = _isGrabbing ? GrabCursorTint : CursorTint;
         GUI.DrawTexture(bounds, CursorImage);
 

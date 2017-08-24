@@ -38,7 +38,7 @@ namespace Microsoft.Gestures.Toolkit
             if (_previousSkeleton != null)
             {
                 var deltaPos = e.Skeleton.PalmPosition - _previousSkeleton.PalmPosition;
-                Tumble(deltaPos.x / (750 / TumbleSensitivity), deltaPos.y / (750 / TumbleSensitivity));
+                Tumble(-deltaPos.x / (750 / TumbleSensitivity), deltaPos.y / (750 / TumbleSensitivity));
                 Dolly(deltaPos.z / (900 / DollySensitivity));
             }
             _previousSkeleton = e.Skeleton;

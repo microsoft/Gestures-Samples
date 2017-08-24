@@ -6,7 +6,8 @@ public class Cursor : MonoBehaviour
 {
     private GameObject _hoveredGameObject;
     private bool _isGrabbing = false;
-    private float _lastPalmDepth;
+    private float _lastObjectDistance;
+    private float _lastPalmDistance;
 
     [Tooltip("The cursor image that will be displayed on the screen.")]
     public Texture2D CursorImage;
@@ -66,14 +67,13 @@ public class Cursor : MonoBehaviour
         return null;
     }
 
-    private float GetCursorDepthDelta()
+    private float GetCursorDistanceCoefficient()
     {
-        // Compute palm depth delta
-        var currentDepth = GetPalmCameraPosition().z;
-        var delta = currentDepth - _lastPalmDepth;
-        _lastPalmDepth = currentDepth;
+        var currentPalmDistance = GetPalmCameraPosition().magnitude;
+        var coefficient = currentPalmDistance / _lastPalmDistance;
+        _lastPalmDistance = currentPalmDistance;
 
-        return delta / 10;
+        return coefficient;
     }
 
     public void StartGrab()
@@ -84,9 +84,11 @@ public class Cursor : MonoBehaviour
             return;
         }
 
-        _isGrabbing = true;
-        // save last value of hand depth
-        _lastPalmDepth = GetPalmCameraPosition().z;
+        _isGrabbing = true; 
+
+        // save last value of hand distance
+        _lastPalmDistance = GetPalmCameraPosition().magnitude;
+        _lastObjectDistance = Vector3.Distance(Camera.main.transform.position, _hoveredGameObject.transform.position);
     }
 
     public void StopGrab()
@@ -144,13 +146,9 @@ public class Cursor : MonoBehaviour
         // Handle motion
         if (_isGrabbing)
         {
-            var plane = new Plane(Camera.main.transform.forward, _hoveredGameObject.transform.position);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
-            float distanceFromCamera;
-            plane.Raycast(ray, out distanceFromCamera);
-            // scale depth according to cursor's depth delta
-            distanceFromCamera *= 1 + GetCursorDepthDelta();
-            _hoveredGameObject.transform.position = ray.GetPoint(distanceFromCamera);
+            _lastObjectDistance *= GetCursorDistanceCoefficient();
+            _hoveredGameObject.transform.position = ray.GetPoint(_lastObjectDistance);
         }
     }
 

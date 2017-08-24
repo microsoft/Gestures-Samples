@@ -6,6 +6,7 @@ public class Cursor : MonoBehaviour
 {
     private GameObject _hoveredGameObject;
     private bool _isGrabbing = false;
+    private float _lastObjectDistance;
 
     [Tooltip("The cursor image that will be displayed on the screen.")]
     public Texture2D CursorImage;
@@ -45,10 +46,9 @@ public class Cursor : MonoBehaviour
         return null;
     }
 
-    private float GetCursorDepthDelta()
+    private float GetCursorDistanceCoefficient()
     {
-        // return mouse scroll delta
-        return Input.mouseScrollDelta.y / 10;
+        return 1 + Input.mouseScrollDelta.y / 10;
     }
 
     public void StartGrab()
@@ -60,6 +60,7 @@ public class Cursor : MonoBehaviour
         }
 
         _isGrabbing = true;
+        _lastObjectDistance = Vector3.Distance(Camera.main.transform.position, _hoveredGameObject.transform.position);
     }
 
     public void StopGrab()
@@ -105,13 +106,9 @@ public class Cursor : MonoBehaviour
         // Handle motion
         if (_isGrabbing)
         {
-            var plane = new Plane(Camera.main.transform.forward, _hoveredGameObject.transform.position);
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
-            float distanceFromCamera;
-            plane.Raycast(ray, out distanceFromCamera);
-            // scale depth according to cursor's depth delta
-            distanceFromCamera *= 1 + GetCursorDepthDelta();
-            _hoveredGameObject.transform.position = ray.GetPoint(distanceFromCamera);
+            _lastObjectDistance *= GetCursorDistanceCoefficient();
+            _hoveredGameObject.transform.position = ray.GetPoint(_lastObjectDistance);
         }
     }
 

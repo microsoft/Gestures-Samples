@@ -12,11 +12,11 @@ Import this package to enable the use of gestures and hand-skeleton in your Unit
 
     List of prefabs contained in the toolkit, in alphabetical order:
 
-    Name | Purpose |
-    -----|---------|
-    **CameraGesturesController** | Use a gesture to "grab" the main camera of the scene, allowing you to tubmle and dolly the camera by moving your hand.
-    **GesturesManager** | A client for the Project Prague [Gestures Service](https://docs.microsoft.com/en-us/gestures/getting-started-gestures-service). Provides a scripting API for gestures and hand-skeleton. A single instance of this prefab is mandatory in every gesture-enabled Unity project.
-    **GestureTrigger** | Allows you to specify a gesture and link it to some functionality in your scene.
+    Name | Purpose | Usage Example
+    -----|---------|--------------
+    **CameraGesturesController** | Use a gesture to "grab" the main camera of the scene, allowing you to tumble and dolly the camera by moving your hand. | [Introduction tutorial - step 6](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-introduction#step-6---using-a-gesture-to-control-the-camera)
+    **GesturesManager** | A client for the Project Prague [Gestures Service](https://docs.microsoft.com/en-us/gestures/getting-started-gestures-service). Provides a scripting API for gestures and hand-skeleton. A single instance of this prefab is mandatory in every gesture-enabled Unity project. | [Introduction tutorial - step 2](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-introduction#step-2---connecting-to-the-gestures-service)
+    **GestureTrigger** | Allows you to specify a gesture and link it to some functionality in your scene. | [Introduction tutorial - step 4](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-introduction#step-4---using-a-gesture-to-generate-new-3d-primitives-in-the-scene)
     **HandCursor** | A 2D cursor, based on the projection of your palm center to the screen.
     **SkeletonVisualizer** | A visualization illustrating the hand-skeleton in real-time.
-    **UIManager** | A UI manager for the GesturesManager, displaying information about the state of the connection to the [Gestures Service](https://docs.microsoft.com/en-us/gestures/getting-started-gestures-service) and providing a basic debugging log.
+    **UIManager** | A UI manager for the GesturesManager, displaying information about the state of the connection to the [Gestures Service](https://docs.microsoft.com/en-us/gestures/getting-started-gestures-service) and providing a basic debugging log. | [Introduction tutorial - step 2](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-introduction#step-2---connecting-to-the-gestures-service)

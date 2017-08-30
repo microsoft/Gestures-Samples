@@ -14,14 +14,13 @@ namespace Microsoft.Gestures.Toolkit
         private GameObject _palm;
         private ValueByFinger<GameObject> _boxByFinger;
 
-        public Hand Hand = Hand.RightHand;
         public Vector3 UnitsScale = 0.001f * Vector3.one;
         public Vector3 UnitsOffset = Vector3.zero;
         public Vector3 CubeScale = Vector3.one;
 
         public Color SkeletonColor = Color.red;
         public bool ShowUI = true;
-        public bool UseStabalizer = true;
+        public bool UseSmoothSkeleton = true;
         public bool IsVisible = true;
 
         void OnEnable()
@@ -43,7 +42,6 @@ namespace Microsoft.Gestures.Toolkit
                 _boxByFinger[finger].layer = gameObject.layer;
             }
 
-            GesturesManager.Instance.SkeletonReady += OnMorihaManager_SkeletonReady;
             if (!GesturesManager.Instance.IsSkeletonRegistered) GesturesManager.Instance.RegisterToSkeleton();
         }
 
@@ -57,15 +55,9 @@ namespace Microsoft.Gestures.Toolkit
 
             if (_boxByFinger != null)
             {
-                foreach (var finger in _boxByFinger.Keys)
-                {
-                    Destroy(_boxByFinger[finger]);
-                }
-
+                foreach (var finger in _boxByFinger.Keys) Destroy(_boxByFinger[finger]);
                 _boxByFinger = null;
             }
-
-            GesturesManager.Instance.SkeletonReady -= OnMorihaManager_SkeletonReady;
         }
 
         private void OnGUI()
@@ -94,11 +86,11 @@ namespace Microsoft.Gestures.Toolkit
             return cam.TransformDirection(dirVector).normalized;
         }
 
-        private void OnMorihaManager_SkeletonReady(object sender, SkeletonEventArgs e)
+        private void HandleSkeleton()
         {
-            if (e.Skeleton.Handedness != Hand) return;
+            var skeleton = UseSmoothSkeleton ? GesturesManager.Instance.SmoothDefaultSkeleton : GesturesManager.Instance.LatestDefaultSkeleton;
+            if (skeleton == null) return;
 
-            var skeleton = UseStabalizer ? GesturesManager.Instance.SmoothDefaultSkeleton: e.Skeleton;
             var palmForward = TransformVector(skeleton.PalmOrientation);
             var palmUp = TransformVector(skeleton.PalmDirection);
 
@@ -120,6 +112,8 @@ namespace Microsoft.Gestures.Toolkit
         public void Update()
         {
             if (GesturesManager.Instance == null) return;
+
+            if (GesturesManager.Instance.IsSkeletonRegistered) HandleSkeleton();
 
             var models = _boxByFinger.Values.Concat(new[] { _palm });
             foreach (var cube in models)

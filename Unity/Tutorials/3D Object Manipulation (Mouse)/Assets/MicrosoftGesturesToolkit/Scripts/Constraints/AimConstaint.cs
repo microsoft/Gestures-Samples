@@ -1,14 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 namespace Microsoft.Gestures.Toolkit
 {
     public class AimConstaint : Constraint
     {
-        private Matrix4x4 _inverseRotationTrans;
-        private Quaternion _offset;
-
         public Vector3 Up = Vector3.up;
         public Vector3 Aim = Vector3.left;
         public Transform Target;
@@ -22,8 +18,6 @@ namespace Microsoft.Gestures.Toolkit
                 return;
             }
 
-            _offset = MaintainOffset ? transform.localRotation : Quaternion.identity;
-
             transform.localRotation = Quaternion.identity;
 
             var x = transform.right;
@@ -34,7 +28,6 @@ namespace Microsoft.Gestures.Toolkit
             cm.SetColumn(0, x);
             cm.SetColumn(1, y);
             cm.SetColumn(2, z);
-            _inverseRotationTrans = cm.inverse;
         }
 
         private void Update()
@@ -58,3 +51,4 @@ namespace Microsoft.Gestures.Toolkit
         }
     } 
 }
+

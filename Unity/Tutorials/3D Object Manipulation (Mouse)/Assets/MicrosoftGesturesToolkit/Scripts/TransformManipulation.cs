@@ -21,7 +21,6 @@ namespace Microsoft.Gestures.Toolkit
         private Selection _selection;
 
         private TransformationMode _mode = TransformationMode.None;
-        private Vector3 _lastCursorWorldPos;
         private Vector3 _initCursorWorldPos;
         private Vector3 _initCursorViewPos;
         private Vector2 _initCursorScreenOffset;
@@ -39,7 +38,6 @@ namespace Microsoft.Gestures.Toolkit
             if (!_isTranslateCrossedThreshold && (_cursor.CursorWorldPosition - _initCursorWorldPos).magnitude < TranslateOnGrabThresholdCm) return;
 
             _isTranslateCrossedThreshold = true;
-            var delta = _cursor.CursorWorldPosition - _lastCursorWorldPos;
             var z0 = Camera.main.transform.InverseTransformPoint(_initSelectedWorldPos).z;
             var zt = z0 * _cursor.CursorViewportPosition.z / _initCursorViewPos.z;
             var rayOffseted = Camera.main.ScreenPointToRay(_cursor.CursorScreenPosition + _initCursorScreenOffset);
@@ -80,8 +78,6 @@ namespace Microsoft.Gestures.Toolkit
                     Scale();
                     break;
             }
-
-            _lastCursorWorldPos = _cursor.CursorWorldPosition;
         }
 
         public void StartTranslation() { StartTransform(TransformationMode.Translate); }

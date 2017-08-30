@@ -13,29 +13,36 @@ namespace Microsoft.Gestures.Toolkit
 
         private SkeletonVisualizer _skeletonVisualizer;
         private string _currentText = string.Empty;
-        private string _prevMessage;
         private bool _isMute = false;
 
-        private Vector2 _scrollPosition = Vector2.zero;
         private bool _isShowOptions = false;
         private bool _isShowStatus = true;
         private bool _isShowDebug = false;
 
         public int DebugMaxCharacters = 30000;
         public bool IsAllowShowSkeleton = false;
-        public Texture2D ConnectedTexture;
-        public Texture2D DisconnectedTexture;
-        public float IconSize = 30f;
+        public bool IsAllowMute = false;
+        public Texture2D StatusTexture;
+        public Texture2D StatusBackTexutre;
+        public Color StatusBackColor = new Color(0x54 / 255f, 0x54 / 255f, 0x54 / 255f, 0.55f);
+        public Color ConnectedStatusColor = new Color(0x55 / 255f, 0x99 / 255f, 0xff / 255f); 
+        public Color DisconnectedStatusColor = new Color(0xcc / 255f, 0xcc / 255f, 0xcc / 255f);
+        public Color DetectingStatusColor = Color.white;
+
+        public Font StatusFont;
         public Rect OptionsButtonBounds = new Rect(84, 10, 100, 24);
-        public Rect OptionsWindowBounds = new Rect(10, 44, 174, 300);
+        public Rect OptionsWindowBounds = new Rect(10, 44, 175, 155);
 
         public bool IsMute { get { return _isMute; } }
 
         public bool IsShowOptions { get { return _isShowOptions; } }
-        public bool ShowRestartButton = true;
-        public bool ShowExitButton = true;
+        public bool ShowRestartButton = false;
+        public bool ShowExitButton = false;
         public string RestartButtonText = "Restart";
-        public Rect RestartButtonBounds = new Rect(10, 40, 20, 50);
+        public Rect RestartButtonBounds = new Rect(12, 10, 60, 24);
+
+        [HideInInspector]
+        public bool IsAppPaused = false;
 
         // Use this for initialization
         private void Awake()
@@ -72,7 +79,6 @@ namespace Microsoft.Gestures.Toolkit
 
         private void OnGUI()
         {
-            var size = new Vector2(100, 24);
             var padding = new Vector2(10, 10);
             var screenSize = new Vector2(Screen.width, Screen.height);
             if (ShowRestartButton && GUI.Button(RestartButtonBounds, RestartButtonText)) OnResetButtonClick.Invoke();
@@ -97,8 +103,8 @@ namespace Microsoft.Gestures.Toolkit
                 }
 
                 _isShowDebug = GUILayout.Toggle(_isShowDebug, "Show Debug");
-                _isMute = GUILayout.Toggle(_isMute, "Mute Sound");
-                AudioListener.pause = _isMute || (AppPaused.Instance && AppPaused.Instance.IsPaused);
+                if(IsAllowMute) _isMute = GUILayout.Toggle(_isMute, "Mute Sound");
+                AudioListener.pause = _isMute || IsAppPaused;
                 GUILayout.Label("Gestures:");
 
                 var gestures = GameObject.FindObjectsOfType<GestureTrigger>().OrderBy(g => g.GetGestureName());
@@ -123,16 +129,36 @@ namespace Microsoft.Gestures.Toolkit
 
             if(_isShowStatus)
             {
-                var isConnected = GesturesManager.Instance && GesturesManager.Instance.IsConnected;
-                var statusTexture = isConnected ? ConnectedTexture : DisconnectedTexture;
+                var statusColor= DisconnectedStatusColor;
+                var gesturesServiceStatus = EndpointStatus.Disconnected.ToString();
 
-                if (statusTexture)
+                if (GesturesManager.Instance && GesturesManager.Instance.IsConnected)
                 {
-                    var w = IconSize;
-                    var h = statusTexture.height / statusTexture.width * w;
-                    GUI.DrawTexture(new Rect(Screen.width - 116 - w, Screen.height - 10 - h, w, h), statusTexture);
-                    GUI.color = Color.black;
-                    GUI.Label(new Rect(Screen.width - 110, Screen.height - 6 - h, 100, h), isConnected ? "Connected" : "Disconnected");
+                    gesturesServiceStatus = GesturesManager.Instance.Status.ToString();
+                    statusColor = GesturesManager.Instance.Status == EndpointStatus.Detecting ? DetectingStatusColor : ConnectedStatusColor;
+                }
+
+                if (StatusBackTexutre && StatusTexture)
+                {
+                    var size = 92;
+                    var statusBackPadding = 10;
+                    var statusBackIconBounds = new Rect(Screen.width - size - statusBackPadding, Screen.height - size - statusBackPadding, size, size);
+                    GUI.color = StatusBackColor;
+                    GUI.DrawTexture(statusBackIconBounds, StatusBackTexutre);
+
+                    size = 52;
+                    var statusPadding  = (statusBackIconBounds.width - size) / 2;
+                    var statusIconBounds = new Rect(statusBackIconBounds.x + 0.8f * statusPadding, statusBackIconBounds.y + 0.5f * statusPadding, size, size);
+                    GUI.color = statusColor;
+                    GUI.DrawTexture(statusIconBounds, StatusTexture);
+                    var myStyle = new GUIStyle();
+                    GUI.color = Color.white;
+                    myStyle.font = StatusFont;
+                    myStyle.fontStyle = FontStyle.Bold;
+                    myStyle.normal.textColor = Color.white;
+                    myStyle.fontSize = 10;
+                    myStyle.alignment = TextAnchor.MiddleCenter;
+                    GUI.Label(new Rect(statusBackIconBounds.x, statusBackIconBounds.yMax - 31, statusBackIconBounds.width, 20), gesturesServiceStatus, myStyle);
                 }
             }
         }

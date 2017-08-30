@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Microsoft.Gestures.UnitySdk;
-using System;
+﻿using Microsoft.Gestures.UnitySdk;
 
 namespace Microsoft.Gestures.Toolkit
 {

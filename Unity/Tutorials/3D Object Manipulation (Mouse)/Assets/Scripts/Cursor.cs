@@ -34,7 +34,7 @@ public class Cursor : MonoBehaviour
 
     private GameObject GetHoveredObject()
     {
-        // Cast a ray from camera towards the cursor.
+        // Cast a ray from the camera towards the cursor.
         var cursorPosition = GetCursorScreenPosition();
         var ray = Camera.main.ScreenPointToRay(cursorPosition);
         RaycastHit hit;
@@ -46,7 +46,7 @@ public class Cursor : MonoBehaviour
         return null;
     }
 
-    private float GetCursorDistanceCoefficient()
+    private float GetCursorDistanceScalingFactor()
     {
         return 1 + Input.mouseScrollDelta.y / 10;
     }
@@ -107,7 +107,7 @@ public class Cursor : MonoBehaviour
         if (_isGrabbing)
         {
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
-            _lastObjectDistance *= GetCursorDistanceCoefficient();
+            _lastObjectDistance *= GetCursorDistanceScalingFactor();
             _hoveredGameObject.transform.position = ray.GetPoint(_lastObjectDistance);
         }
     }

@@ -100,6 +100,11 @@
             Gets or sets a value indicating whether this instance is connected to Gestures service.
             </summary>
         </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.Status">
+            <summary>
+            Gets the status of the Gestures Service.
+            </summary>
+        </member>
         <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.IsSkeletonRegistered">
             <summary>
             Gets or sets a value indicating whether the articulate skeleton events are registered.
@@ -107,29 +112,32 @@
         </member>
         <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.Skeletons">
             <summary>
-            Gets the last received skeletons for the left and right hands.
+            Gets the last received skeletons for all detected hands.
             </summary>
         </member>
         <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothSkeletons">
             <summary>
-            Gets the smooth skeletons averaged over the <see cref="F:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothMovingAverageWindowSize"/> last updates.
+            Gets the smooth skeletons averaged over the <see cref="F:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothMovingAverageWindowSize"/> last updates, for all detected hands.
             </summary>
         </member>
         <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.LatestDefaultSkeleton">
             <summary>
-            Gets the latest default skeleton. The default skeleton is the one closest to the physical camera, 
-            giving precedence to right hands while falling back to left if right is not available
+            Gets the default skeleton is that of the right hand closest to the depth camera(or left hand, if no right hands are detected).
             </summary>
         </member>
         <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothDefaultSkeleton">
             <summary>
-            Gets the latest smooth default skeleton. The default skeleton is the one closest to the physical camera, 
-            giving precedence to right hands while falling back to left if right is not available
+            Gets the smooth default skeleton, averaged over the<see cref="F:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothMovingAverageWindowSize"/> last updates.
             </summary>
         </member>
         <member name="F:Microsoft.Gestures.UnitySdk.GesturesManager.IsSuspendEventOnLostFocus">
             <summary>
             Indicates whether events (e.g. skeleton and gestures) are suspended when application is NOT focused.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.ActiveSensorName">
+            <summary>
+            Gets the name of the active sensor.
             </summary>
         </member>
         <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsXamlTriggered(System.String)">
@@ -253,6 +261,27 @@
         <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.GetGestureName(System.String)">
             <summary>
             Extracts the gesture's name from the specified XAML.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Gestures.UnitySdk.EndpointStatus">
+            <summary>
+            Enumeration specifying the various statuses/states of the gestures service the 
+            end point is bound to.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.EndpointStatus.Disconnected">
+            <summary>
+            The gesture service is disconnected from the endpoint (from transport/remoting point of view)
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.EndpointStatus.Connected">
+            <summary>
+            The gesture service is connected to the endpoint (from transport/remoting point of view)
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.EndpointStatus.Detecting">
+            <summary>
+            The gestures service is Connected AND gestures are being detected
             </summary>
         </member>
         <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.Empty">

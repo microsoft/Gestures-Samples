@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
 namespace Microsoft.Gestures.Toolkit
@@ -21,7 +19,7 @@ namespace Microsoft.Gestures.Toolkit
         public float Speed = 2;
 
         /// <summary>
-        /// Gets a value indicating whether this instance is animating the camera blur post porcess.
+        /// Gets a value indicating whether this instance is animating the camera blur post process.
         /// </summary>
         public bool IsAnimating { get { return _isAnimating; } }
 

@@ -1,12 +1,15 @@
 ﻿using Microsoft.Gestures.UnitySdk;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 namespace Microsoft.Gestures.Toolkit
 {
     public class CameraManipulation : ObjectBase
     {
-        private Vector3 _lookAt;
+        /// <summary>
+        /// The look at position is fixed to the world origin
+        /// </summary>
+        private Vector3 _lookAt = Vector3.zero;
+
         private bool _isRunning = false;
         private Skeleton _previousSkeleton;
 
@@ -14,34 +17,30 @@ namespace Microsoft.Gestures.Toolkit
         public float TumbleSensitivity = 5;
         public float DollySensitivity = 5;
 
-        public bool UseStabilizer = true;
+        public bool UseSmoothSkeleton = true;
         public float MinDistanceFromFocus = 1f;
         public float MaxDistanceFromFocus = 5f;
 
         public float GroundY = float.MinValue;
 
-        private void RegisterToSkeleton()
+        public void Update()
         {
-            if (GesturesManager.Instance && !GesturesManager.Instance.IsSkeletonRegistered)
-            {
-                GesturesManager.Instance.RegisterToSkeleton();
-            }
+            if (GesturesManager.Instance && GesturesManager.Instance.IsSkeletonRegistered) HandleSkeleton();
         }
 
-
-        public void Update() { RegisterToSkeleton(); }
-
-        private void OnGesturesManager_SkeletonReady(object sender, SkeletonEventArgs e)
+        private void HandleSkeleton()
         {
-            var manager = GesturesManager.Instance;
+            if (!_isRunning) return;
+
+            var skeleton = UseSmoothSkeleton ? GesturesManager.Instance.SmoothDefaultSkeleton : GesturesManager.Instance.LatestDefaultSkeleton;
     
             if (_previousSkeleton != null)
             {
-                var deltaPos = e.Skeleton.PalmPosition - _previousSkeleton.PalmPosition;
+                var deltaPos = skeleton.PalmPosition - _previousSkeleton.PalmPosition;
                 Tumble(-deltaPos.x / (750 / TumbleSensitivity), deltaPos.y / (750 / TumbleSensitivity));
                 Dolly(deltaPos.z / (900 / DollySensitivity));
             }
-            _previousSkeleton = e.Skeleton;
+            _previousSkeleton = skeleton;
         }
 
         public void StartManipulating()
@@ -58,11 +57,10 @@ namespace Microsoft.Gestures.Toolkit
                 return;
             }
 
-            RegisterToSkeleton();
+            if (!GesturesManager.Instance.IsSkeletonRegistered) GesturesManager.Instance.RegisterToSkeleton();
 
             if (GesturesManager.Instance.IsSkeletonRegistered)
             {
-                GesturesManager.Instance.SkeletonReady += OnGesturesManager_SkeletonReady;
                 _previousSkeleton = GesturesManager.Instance.SmoothDefaultSkeleton;
                 _isRunning = true;
                 Debug.Log("Gesture camera manipulation started successfully.");
@@ -76,8 +74,7 @@ namespace Microsoft.Gestures.Toolkit
         public void StopManipulating()
         {
             if (!_isRunning) return;
-
-            GesturesManager.Instance.SkeletonReady -= OnGesturesManager_SkeletonReady;
+            
             _isRunning = false;
             Debug.Log("Gesture camera manipulation stopped successfully.");
         }
@@ -94,7 +91,6 @@ namespace Microsoft.Gestures.Toolkit
 
             var ry = Quaternion.Euler(0, deltaX, 0);
             var rAxis = Quaternion.AngleAxis(deltaY, norm);
-            var final = Matrix4x4.TRS(Vector3.zero, rAxis, Vector3.one) * Matrix4x4.TRS(Vector3.zero, ry, Vector3.one);
 
             var up = cam.transform.up;
             var eye = cam.transform.position - _lookAt;

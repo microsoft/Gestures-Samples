@@ -55,7 +55,7 @@ public class Cursor : MonoBehaviour
 
     private GameObject GetHoveredObject()
     {
-        // Cast a ray from camera towards the cursor.
+        // Cast a ray from the camera towards the cursor.
         var cursorPosition = GetCursorScreenPosition();
         var ray = Camera.main.ScreenPointToRay(cursorPosition);
         RaycastHit hit;
@@ -67,7 +67,7 @@ public class Cursor : MonoBehaviour
         return null;
     }
 
-    private float GetCursorDistanceCoefficient()
+    private float GetCursorDistanceScalingFactor()
     {
         var currentPalmDistance = GetPalmCameraPosition().magnitude;
         var coefficient = currentPalmDistance / _lastPalmDistance;
@@ -84,29 +84,15 @@ public class Cursor : MonoBehaviour
             return;
         }
 
-        _isGrabbing = true; 
-
-        // save last value of hand distance
-        _lastPalmDistance = GetPalmCameraPosition().magnitude;
+        _isGrabbing = true;
         _lastObjectDistance = Vector3.Distance(Camera.main.transform.position, _hoveredGameObject.transform.position);
+        _lastPalmDistance = GetPalmCameraPosition().magnitude;
     }
 
     public void StopGrab()
     {
         // Stop grab mode.
         _isGrabbing = false;
-    }
-
-    private void OnEnable()
-    {
-        // Register to skeleton events
-        GesturesManager.Instance.RegisterToSkeleton();
-    }
-
-    private void OnDisable()
-    {
-        // Unregister from skeleton events
-        GesturesManager.Instance.UnregisterFromSkeleton();
     }
 
     private void Update()
@@ -147,7 +133,7 @@ public class Cursor : MonoBehaviour
         if (_isGrabbing)
         {
             var ray = Camera.main.ScreenPointToRay(GetCursorScreenPosition());
-            _lastObjectDistance *= GetCursorDistanceCoefficient();
+            _lastObjectDistance *= GetCursorDistanceScalingFactor();
             _hoveredGameObject.transform.position = ray.GetPoint(_lastObjectDistance);
         }
     }
@@ -170,5 +156,17 @@ public class Cursor : MonoBehaviour
         GUI.DrawTexture(bounds, CursorImage);
 
         GUI.color = originalColor;
+    }
+
+    private void OnEnable()
+    {
+        // Register to skeleton events
+        GesturesManager.Instance.RegisterToSkeleton();
+    }
+
+    private void OnDisable()
+    {
+        // Unregister from skeleton events
+        GesturesManager.Instance.UnregisterFromSkeleton();
     }
 }

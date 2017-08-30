@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Microsoft.Gestures.UnitySdk;
-using System.Reflection;
 using System.Linq;
 using System;
 using System.Xml;
-using UnityEngine.Events;
 
 namespace Microsoft.Gestures.Toolkit
 {

@@ -16,7 +16,7 @@ namespace Microsoft.Gestures.Toolkit
         public Vector2 CursorSize = 50 * Vector2.one;
 
         [Tooltip("Check this for a more smooth hand cursor motion.")]
-        public bool UseStabalizer = false;
+        public bool UseSmoothSkeleton = false;
 
         public Vector3 UnitsScale = new Vector3(.1f, .1f, -.1f);
 
@@ -53,7 +53,7 @@ namespace Microsoft.Gestures.Toolkit
         
         private void Update()
         {
-            var skeleton = UseStabalizer ? GesturesManager.Instance.SmoothDefaultSkeleton : GesturesManager.Instance.LatestDefaultSkeleton;
+            var skeleton = UseSmoothSkeleton ? GesturesManager.Instance.SmoothDefaultSkeleton : GesturesManager.Instance.LatestDefaultSkeleton;
 
             if (skeleton == null) return;
 

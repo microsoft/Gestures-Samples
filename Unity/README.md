@@ -1,7 +1,7 @@
 The contents of this directory is:
 
-- [**Tutorials**](Tutorials) - contains several Unity projects demonstrating how to use [Project Prague](https://docs.microsoft.com/en-us/gestures)
-to integrate gestures in Unity games. Each Unity project within this directory contains the final product of one of our Unity tutorials:
+- **Tutorials**: several Unity projects demonstrating how to use [Project Prague](https://docs.microsoft.com/en-us/gestures)
+to integrate gestures into Unity games. Each of the following directories contains the final Unity project obtained in the corresponding tutorial:
 
     - [Introduction](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-introduction) - learn how to wire a gesture to an existing functionality in your scene. This tutorial introduces you to the **GesturesManager**, **UIManager**, **GestureTrigger** and **CameraGesturesController** prefabs.
     - [3D Object Manipulation (Mouse)](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-3d-object-manipulation-mous) - create a 3D cursor that can move objects in the scene. The cursor is controlled by the mouse, using existing Unity capabilities.

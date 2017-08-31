@@ -4,8 +4,8 @@ The contents of this directory is:
 to integrate gestures into Unity games. Each of the following directories contains the final Unity project obtained in the corresponding tutorial:
 
     - [Introduction](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-introduction) - learn how to wire a gesture to an existing functionality in your scene. This tutorial introduces you to the **GesturesManager**, **UIManager**, **GestureTrigger** and **CameraGesturesController** prefabs.
-    - [3D Object Manipulation (Mouse)](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-3d-object-manipulation-mous) - create a 3D cursor that can move objects in the scene. The cursor is controlled by the mouse, using existing Unity capabilities.
-    - [3D Object Manipulation (Hand)](https://review.docs.microsoft.com/en-us/gestures/unity-tutorials-3d-object-manipulation-hand) - create a 3D cursor which is controlled by the hand, enabling you to use a gesture to "grab" an object and move it around in the scene.
+    - [3D Object Manipulation - Scene Preparation](https://docs.microsoft.com/en-us/gestures/unity-tutorials-3d-object-manipulation-mouse) - create a 3D cursor that can move objects in the scene. The cursor is controlled by the mouse, using existing Unity functionality.
+    - [3D Object Manipulation](https://docs.microsoft.com/en-us/gestures/unity-tutorials-3d-object-manipulation-hand) - create a 3D cursor which is controlled by the hand, enabling you to use a gesture to "grab" an object and move it around in the scene.
 
 - [**Microsoft.Gestures.Toolkit.unitypackage**](Microsoft.Gestures.Toolkit.unitypackage) - [Project Prague's](https://docs.microsoft.com/en-us/gestures) Unity toolkit package.
 Import this package to enable the use of gestures and hand-skeleton in your Unity project.

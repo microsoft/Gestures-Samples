@@ -1,0 +1,465 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Gestures.UnitySdk</name>
+    </assembly>
+    <members>
+        <member name="P:Microsoft.Gestures.UnitySdk.GestureEventArgs.GesturePath">
+            <summary>
+            Gets the entire gesture path that was received from the <see cref="T:Microsoft.Gestures.UnitySdk.GesturesManager"/> server.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GestureEventArgs.GestureName">
+            <summary>
+            Gets the name of the gesture.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GestureEventArgs.GestureSegments">
+            <summary>
+            Gets an array of gesture segments that were triggered.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GestureEventArgs.IsWholeGesture">
+            <summary>
+            Gets a value indicating whether the entire gesture was triggered (i.e. <see cref="P:Microsoft.Gestures.UnitySdk.GestureEventArgs.GestureSegments"/> is empty).
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GestureEventArgs.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Gestures.UnitySdk.GestureEventArgs"/> class.
+            </summary>
+            <param name="gesturePath">The gesture path.</param>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GestureEventArgs.Contains(Microsoft.Gestures.UnitySdk.StockGestures)">
+            <summary>
+            Determines whether the specified <see cref="T:Microsoft.Gestures.UnitySdk.StockGestures"/> is contained within the triggered event.
+            </summary>
+            <param name="gesture">The stock gesture enum value.</param>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GestureEventArgs.ContainsSegment(System.String)">
+            <summary>
+            Determines whether the specified gesture segment was triggered, i.e. contained within the event.
+            </summary>
+            <param name="gestureSegment">The gesture segment.</param>
+            <returns>
+              <c>true</c> if the specified gesture segment was triggered, i.e. contained within the event; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="T:Microsoft.Gestures.UnitySdk.Finger">
+            <summary>
+            An enumeration over the set of possible fingers.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Gestures.UnitySdk.Hand">
+            <summary>
+            An enumeration over the set of supported hands, i.e. right and left hands.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Gestures.UnitySdk.GesturesManager.IsConnectedChanged">
+            <summary>
+            Occurs when the <see cref="P:Microsoft.Gestures.UnitySdk.GesturesManager.IsConnected"/> property changed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Gestures.UnitySdk.GesturesManager.IsSkeletonRegisteredChanged">
+            <summary>
+            Occurs when the <see cref="P:Microsoft.Gestures.UnitySdk.GesturesManager.IsSkeletonRegistered"/> property changed.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Gestures.UnitySdk.GesturesManager.SkeletonReady">
+            <summary>
+            Occurs when the sensor has estimated a valid hand skeleton.
+            </summary>
+        </member>
+        <member name="E:Microsoft.Gestures.UnitySdk.GesturesManager.GestureReceived">
+            <summary>
+            Occurs when a gesture (or any of its segments) is recognized.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.GesturesManager._triggerGestures">
+            <summary>
+            Stores the gestures' events from the last Update call
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.GesturesManager.ConnectionTryInterval">
+            <summary>
+            The number of seconds between reconnection tries.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.GesturesManager.AutoConnect">
+            <summary>
+            A value indicating if the <see cref="T:Microsoft.Gestures.UnitySdk.GesturesManager"/> will attempt to connect to the gestures service on Start
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.GesturesManager.ShowGUI">
+            <summary>
+            A value indicating whether to show GUI options on screen.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.IsConnected">
+            <summary>
+            Gets or sets a value indicating whether this instance is connected to Gestures service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.Status">
+            <summary>
+            Gets the status of the Gestures Service.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.IsSkeletonRegistered">
+            <summary>
+            Gets or sets a value indicating whether the articulate skeleton events are registered.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.Skeletons">
+            <summary>
+            Gets the last received skeletons for all detected hands.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothSkeletons">
+            <summary>
+            Gets the smooth skeletons averaged over the <see cref="F:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothMovingAverageWindowSize"/> last updates, for all detected hands.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.LatestDefaultSkeleton">
+            <summary>
+            Gets the default skeleton is that of the right hand closest to the depth camera(or left hand, if no right hands are detected).
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothDefaultSkeleton">
+            <summary>
+            Gets the smooth default skeleton, averaged over the<see cref="F:Microsoft.Gestures.UnitySdk.GesturesManager.SmoothMovingAverageWindowSize"/> last updates.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.GesturesManager.IsSuspendEventOnLostFocus">
+            <summary>
+            Indicates whether events (e.g. skeleton and gestures) are suspended when application is NOT focused.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.GesturesManager.ActiveSensorName">
+            <summary>
+            Gets the name of the active sensor.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsXamlTriggered(System.String)">
+            <summary>
+            Determines whether the specified gesture XAML was triggered since the last <see cref="!:Update"/> call.
+            </summary>
+            <param name="gestureXAML">The gesture XAML.</param>
+            <returns>
+            <c>true</c> if a gesture with the specified gesture XAML was triggered since the last <see cref="!:Update"/> call; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsXamlTriggered(System.String,System.String)">
+            <summary>
+            Determines whether the specified segment of the specified gesture XAML was triggered since the last <see cref="!:Update"/> call.
+            </summary>
+            <param name="gestureXAML">The name of the gesture.</param>
+            <param name="segment">The gesture segment.</param>
+            <returns>
+            <c>true</c> if the specified segment of the specified gesture XAML was triggered since the last <see cref="!:Update"/> call; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsTriggered(Microsoft.Gestures.UnitySdk.StockGestures)">
+            <summary>
+            Determines whether the specified gesture was triggered since the last <see cref="!:Update"/> call.
+            </summary>
+            <param name="gesture">The stock gesture.</param>
+            <returns>
+            <c>true</c> if the specified stock gesture with the specified name was triggered since the last <see cref="!:Update"/> call; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsTriggered(System.String)">
+            <summary>
+            Determines whether the specified gesture was triggered since the last <see cref="!:Update"/> call.
+            </summary>
+            <param name="gestureName">The name of the gesture.</param>
+            <returns>
+            <c>true</c> if a gesture with the specified name was triggered since the last <see cref="!:Update"/> call; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsTriggered(System.String,System.String)">
+            <summary>
+            Determines whether the specified segment of the specified gesture was triggered since the last <see cref="!:Update"/> call.
+            </summary>
+            <param name="gestureName">The name of the gesture.</param>
+            <param name="segment">The gesture segment.</param>
+            <returns>
+            <c>true</c> if a gesture with the specified name was triggered since the last <see cref="!:Update"/> call; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.Connect">
+            <summary>
+            Connects to the gestures service.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.Disconnect">
+            <summary>
+            Disconnects from the gestures service.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.RegisterToSkeleton">
+            <summary>
+            Registers to articulate skeleton events.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.UnregisterFromSkeleton">
+            <summary>
+            Unregisters from articulate skeleton events.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsRegistered(Microsoft.Gestures.UnitySdk.StockGestures)">
+            <summary>
+            Determines whether the specified gesture is registered.
+            </summary>
+            <param name="gesture">The gesture.</param>
+            <returns>
+            <c>true</c> if the specified gesture is registered; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.IsRegistered(System.String)">
+            <summary>
+            Determines whether the specified gesture XAML is registered.
+            </summary>
+            <param name="gestureXaml">The gesture XAML.</param>
+            <returns>
+            <c>true</c> if the specified gesture XAML is registered; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.Register(Microsoft.Gestures.UnitySdk.StockGestures,Microsoft.Gestures.UnitySdk.GestureEventHandler)">
+            <summary>
+            Registers the specified gesture. When the gesture is triggered the specified handler is invoked.
+            </summary>
+            <param name="gesture">The gesture to register.</param>
+            <param name="handler">The handler to invoke when the gesture is triggered.</param>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.Unregister(Microsoft.Gestures.UnitySdk.StockGestures,Microsoft.Gestures.UnitySdk.GestureEventHandler)">
+            <summary>
+            Unregisters the specified gesture.
+            </summary>
+            <param name="gesture">The gesture to unregister.</param>
+            <param name="handler">The handler to stop invoking when the gesture is triggered.</param>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.Register(System.String,Microsoft.Gestures.UnitySdk.GestureEventHandler)">
+            <summary>
+            Registers the specified gesture XAML. When the gesture is triggered the specified handler is invoked.
+            </summary>
+            <param name="gestureXaml">The gesture XAML to register.</param>
+            <param name="handler">The handler to invoke when the gesture is triggered.</param>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.Unregister(System.String,Microsoft.Gestures.UnitySdk.GestureEventHandler)">
+            <summary>
+            Unregisters the specified gesture XAML.
+            </summary>
+            <param name="gestureXaml">The gesture XAML to unregister.</param>
+            <param name="handler">The handler to stop invoking when the gesture is triggered.</param>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.ToXaml(Microsoft.Gestures.UnitySdk.StockGestures)">
+            <summary>
+            Returns the XAML representation of the specified <see cref="T:Microsoft.Gestures.UnitySdk.StockGestures"/> value.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.GesturesManager.GetGestureName(System.String)">
+            <summary>
+            Extracts the gesture's name from the specified XAML.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Gestures.UnitySdk.EndpointStatus">
+            <summary>
+            Enumeration specifying the various statuses/states of the gestures service the 
+            end point is bound to.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.EndpointStatus.Disconnected">
+            <summary>
+            The gesture service is disconnected from the endpoint (from transport/remoting point of view)
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.EndpointStatus.Connected">
+            <summary>
+            The gesture service is connected to the endpoint (from transport/remoting point of view)
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.EndpointStatus.Detecting">
+            <summary>
+            The gestures service is Connected AND gestures are being detected
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.Empty">
+            <summary>
+            Gets an empty skeleton where all the position and orientation values are zeroed out. In addition, the Guid is empty and the hand is set to right hand.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.Handedness">
+            <summary>
+            The hand type, i.e. right or left.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.Guid">
+            <summary>
+            The unique identifier
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.PalmPosition">
+            <summary>
+            Gets the palm position in camera space.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.PalmDirection">
+            <summary>
+            Gets the palm direction in camera space. i.e. hand normal.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.PalmOrientation">
+            <summary>
+            Gets the palm orientation in camera space.
+            i.e. hand up direction from the palm position towards the middle finger if the middle finger is stretched. 
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.FingerPositions">
+            <summary>
+            Gets the finger position dictionary in camera space (in mm).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.ThumbPosition">
+            <summary>
+            Gets the thumb position in camera space (in mm).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.IndexPosition">
+            <summary>
+            Gets the index finger position in camera space (in mm).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.MiddlePosition">
+            <summary>
+            Gets the middle finger position in camera space (in mm).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.RingPosition">
+            <summary>
+            Gets the ring finger position in camera space (in mm).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.PinkyPosition">
+            <summary>
+            Gets the pinky finger position in camera space (in mm).
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.Skeleton.FingerDirections">
+            <summary>
+            Gets the finger direction vectors dictionary.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.Skeleton.Equals(Microsoft.Gestures.UnitySdk.Skeleton,Microsoft.Gestures.UnitySdk.Skeleton)">
+            <summary>
+            Determines whether the two specified instances have the same value. i.e. contains the same palm and finger estimations.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.SkeletonEventArgs.Skeleton">
+            <summary>
+            Gets the skeleton palm and finger orientations and positions in camera space.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.SkeletonEventArgs.#ctor(Microsoft.Gestures.UnitySdk.Skeleton)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Gestures.UnitySdk.SkeletonEventArgs"/> class.
+            </summary>
+            <param name="skeleton">The skeleton.</param>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.Guid">
+            <summary>
+            Gets the unique identifier of the hand that this instance is responsible to stabilize.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.Handedness">
+            <summary>
+            Gets the which hand is being stabilized.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.MovingAverageWindowSize">
+            <summary>
+            Gets the moving average size, i.e. the number of skeleton signals to average.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.AverageSkeleton">
+            <summary>
+            Gets the moving average skeleton over the last <see cref="F:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.MovingAverageWindowSize"/> steps.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.PreviousAverageSkeleton">
+            <summary>
+            Gets the moving average skeleton before the last skeleton update.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Gestures.UnitySdk.SkeletonStabilizer"/> class.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.Enqueue(Microsoft.Gestures.UnitySdk.Skeleton)">
+            <summary>
+            Enqueues the specified skeleton value. Accumulates the value and calculates the average of the <see cref="F:Microsoft.Gestures.UnitySdk.SkeletonStabilizer.MovingAverageWindowSize"/> last skeleton values.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Gestures.UnitySdk.StockGestures">
+            <summary>
+            An enumeration over the set of all stock gestures, i.e. a preset of predefined gestures.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.Utils.GetHashCode(System.Object[])">
+            <summary>
+            Returns a hash code for input array.
+            </summary>
+            <param name="components">The components.</param>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.Utils.ToFloats(System.String)">
+            <summary>
+            Parse the specified string as an array of float values separated by a comma.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.Utils.ParseVector3(System.String)">
+            <summary>
+            Parse the specified string as a <see cref="T:UnityEngine.Vector3"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.AllKeys">
+            <summary>
+            Gets the entire set of possible key values.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.Count">
+            <summary>
+            Gets the number of key, value pairs.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.Keys">
+            <summary>
+            Gets the entire set of possible key values. Equivalent to <see cref="F:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.AllKeys"/> static property.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.Values">
+            <summary>
+            Gets the values ordered by the key ordering.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.Item(`0)">
+            <summary>
+            Gets or sets the <see cref="!:TValue"/> with the specified key.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.#ctor(`1[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2"/> class.
+            </summary>
+            <param name="values">The initial values ordered by the key order.</param>
+        </member>
+        <member name="M:Microsoft.Gestures.UnitySdk.ValueByEnumKey`2.#ctor">
+            <summary>
+            Default constructor throws an exception if <see cref="!:TEnumKey"/> is not an enumeration type.
+            </summary>
+        </member>
+    </members>
+</doc>

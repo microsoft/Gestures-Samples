@@ -76,7 +76,7 @@ namespace Microsoft.Gestures.Samples.RockPaperScissors
             // In case the user performs a pose that is not one of the game poses the gesture resets and this event will trigger
             _gameGesture.IdleTriggered += (s, arg) => UserStrategyChanged?.Invoke(GameStrategy.None);
 
-            // Step2: Connect to Gesture Detection Service, route StatusChanged event to the UI and register the gesture
+            // Step2: Connect to Gesture Service, route StatusChanged event to the UI and register the gesture
             _gesturesService = GesturesServiceEndpointFactory.Create();
             _gesturesService.StatusChanged += (oldStatus, newStatus) => GesturesDetectionStatusChanged?.Invoke(oldStatus, newStatus);
             await _gesturesService.ConnectAsync();

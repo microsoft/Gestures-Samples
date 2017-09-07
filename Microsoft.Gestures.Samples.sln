@@ -15,6 +15,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RockPaperScissors", "RockPa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Camera3D", "Camera3D\Camera3D.csproj", "{E3DF2155-626A-44AF-AADB-98A124DA21CA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleCore", "ConsoleCore\ConsoleCore.csproj", "{BEDDCA9B-04D4-491C-AFC8-0E15DFB843F8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleNative", "ConsoleNative\ConsoleNative.vcxproj", "{ECCCFFF9-1043-454D-8544-7F4BF53E0955}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RotateSampleUwpManaged", "RotateSampleUwpManaged\RotateSampleUwpManaged.csproj", "{E4EA7911-45C4-4D67-B148-85061C2C0841}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RotateSampleUwpNative", "RotateSampleUwpNative\RotateSampleUwpNative.vcxproj", "{60018519-56F4-4F1B-876C-341014C43B69}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GrabAndPushUwpNative", "GrabAndPushUwpNative\GrabAndPushUwpNative.vcxproj", "{BC9B8E4A-7748-4FBD-A102-F6B39F319ECB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,8 +55,31 @@ Global
 		{E3DF2155-626A-44AF-AADB-98A124DA21CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3DF2155-626A-44AF-AADB-98A124DA21CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3DF2155-626A-44AF-AADB-98A124DA21CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEDDCA9B-04D4-491C-AFC8-0E15DFB843F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEDDCA9B-04D4-491C-AFC8-0E15DFB843F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEDDCA9B-04D4-491C-AFC8-0E15DFB843F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEDDCA9B-04D4-491C-AFC8-0E15DFB843F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECCCFFF9-1043-454D-8544-7F4BF53E0955}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{ECCCFFF9-1043-454D-8544-7F4BF53E0955}.Release|Any CPU.ActiveCfg = Release|x64
+		{ECCCFFF9-1043-454D-8544-7F4BF53E0955}.Release|Any CPU.Build.0 = Release|x64
+		{E4EA7911-45C4-4D67-B148-85061C2C0841}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{E4EA7911-45C4-4D67-B148-85061C2C0841}.Debug|Any CPU.Build.0 = Debug|x64
+		{E4EA7911-45C4-4D67-B148-85061C2C0841}.Release|Any CPU.ActiveCfg = Release|x64
+		{E4EA7911-45C4-4D67-B148-85061C2C0841}.Release|Any CPU.Build.0 = Release|x64
+		{E4EA7911-45C4-4D67-B148-85061C2C0841}.Release|Any CPU.Deploy.0 = Release|x64
+		{60018519-56F4-4F1B-876C-341014C43B69}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{60018519-56F4-4F1B-876C-341014C43B69}.Release|Any CPU.ActiveCfg = Release|x64
+		{60018519-56F4-4F1B-876C-341014C43B69}.Release|Any CPU.Build.0 = Release|x64
+		{60018519-56F4-4F1B-876C-341014C43B69}.Release|Any CPU.Deploy.0 = Release|x64
+		{BC9B8E4A-7748-4FBD-A102-F6B39F319ECB}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{BC9B8E4A-7748-4FBD-A102-F6B39F319ECB}.Release|Any CPU.ActiveCfg = Release|x64
+		{BC9B8E4A-7748-4FBD-A102-F6B39F319ECB}.Release|Any CPU.Build.0 = Release|x64
+		{BC9B8E4A-7748-4FBD-A102-F6B39F319ECB}.Release|Any CPU.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCB80E8D-8844-4CFB-AD63-D554117575EA}
 	EndGlobalSection
 EndGlobal

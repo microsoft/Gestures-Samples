@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Gestures.Common.Core">
+      <HintPath>$(MicrosoftGesturesInstallDir)\SDK\.netcore\Microsoft.Gestures.Common.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Gestures.Core">
+      <HintPath>$(MicrosoftGesturesInstallDir)\SDK\.netcore\Microsoft.Gestures.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Gestures.Protocol.Core">
+      <HintPath>$(MicrosoftGesturesInstallDir)\SDK\.netcore\Microsoft.Gestures.Protocol.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Gestures.Proxy.Core">
+      <HintPath>$(MicrosoftGesturesInstallDir)\SDK\.netcore\Microsoft.Gestures.Proxy.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

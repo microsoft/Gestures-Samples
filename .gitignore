@@ -286,3 +286,8 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# UWP Generated files
+RotateSampleUwpNative/Generated Files/
+GrabAndPushUwpNative/Generated Files/
+VideoPlayerGestureControlUwpNative/Generated Files/

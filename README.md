@@ -1,10 +1,10 @@
 # Overview
 
-This repository contains C# code samples demonstrating how to use the [Project Prague](https://aka.ms/gestures) hand gestures SDK. For a quick introduction to programming with our SDK, please visit our [overview page on docs.microsoft.com](https://docs.microsoft.com/en-us/gestures/). In order to build and run the code samples provided in this repository, you must first [set up Project Prague on your machine](https://docs.microsoft.com/en-us/gestures/index#getting-started-with-project-prague). Note that you will need either an [**Intel® RealSense™ SR300 camera**](https://click.intel.com/intelrealsense-developer-kit-featuring-sr300.html) or a [**Kinect for Windows v2 camera**](https://developer.microsoft.com/en-us/windows/kinect/hardware) to enable our gesture detection runtime.
+This repository contains code samples demonstrating how to use the [Project Prague](https://aka.ms/gestures) hand gestures SDK. For a quick introduction to programming with our SDK, please visit our [overview page on docs.microsoft.com](https://docs.microsoft.com/en-us/gestures/). In order to build and run the code samples provided in this repository, you must first [set up Project Prague on your machine](https://docs.microsoft.com/en-us/gestures/index#getting-started-with-project-prague). Note that you will need either an [**Intel® RealSense™ SR300 camera**](https://click.intel.com/intelrealsense-developer-kit-featuring-sr300.html) or a [**Kinect for Windows v2 camera**](https://developer.microsoft.com/en-us/windows/kinect/hardware) to enable our gesture detection runtime.
 
 # Code Samples
 
-After cloning this repository, please open the [Microsoft.Gestures.Samples](Microsoft.Gestures.Samples.sln) soulution in Visual Studio. You will find 6 projects in this solution. Each project is a stand-alone code sample that can be built and run independently of the other projects. The table below lists the samples ordered from the least to the most advanced:
+After cloning this repository, please open the [Microsoft.Gestures.Samples](Microsoft.Gestures.Samples.sln) soulution in Visual Studio. You will find 12 projects in this solution. Each project is a stand-alone code sample that can be built and run independently of the other projects. The table below lists the samples ordered from the least to the most advanced:
 
 Sample|Use case|What will you learn?
 ------|-----------|--------------------

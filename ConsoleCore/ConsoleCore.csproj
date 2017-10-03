@@ -28,5 +28,5 @@
       <HintPath>$(MicrosoftGesturesInstallDir)\SDK\.netcore\Microsoft.Gestures.Proxy.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+  <Import Project="$(SolutionDir)\common.targets" />	
 </Project>

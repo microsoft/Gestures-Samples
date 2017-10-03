@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ValidateMicrosoftGesturesInstallDirEnvVaraibleIsDefined" BeforeTargets="PreBuildEvent">  
+        <Error Text="MicrosoftGesturesInstallDir environment variable is not defined! Kindly install Microsoft Gestures SDK from https://aka.ms/gestures/download and restart this Visual Studio instance."  
+               Condition="'$(MicrosoftGesturesInstallDir)' == ''" />
+		<Error Text="MicrosoftGesturesInstallDir environment variable points to non existent directory ($(MicrosoftGesturesInstallDir))! Kindly install Microsoft Gestures SDK from https://aka.ms/gestures/download and restart this Visual Studio instance."  
+               Condition="!Exists('$(MicrosoftGesturesInstallDir)')" />
+    </Target> 
+</Project>

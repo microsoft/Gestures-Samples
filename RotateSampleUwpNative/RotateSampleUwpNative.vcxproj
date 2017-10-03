@@ -254,6 +254,7 @@
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(SolutionDir)\common.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

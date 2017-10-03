@@ -1,29 +1,41 @@
-﻿using System.Windows;
-using Microsoft.Gestures;
+﻿using System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Microsoft.Gestures.Endpoint;
-using System.Windows.Media;
-using System;
+using Microsoft.Gestures;
+using Windows.UI.Core;
 
-namespace Microsoft.Gestures.Samples.RotateSample
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+
+namespace RotateSampleUwpManaged
 {
-    public partial class MainWindow : System.Windows.Window
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class MainPage : Page
     {
         private GesturesServiceEndpoint _gesturesService;
         private Gesture _rotateGesture;
         private int _rotateTimes = 0;
-        
-        public MainWindow()
+
+        public MainPage()
         {
-            InitializeComponent();
-            Loaded += WindowLoaded;
+            this.InitializeComponent();
+            Loaded += PageLoaded;
         }
 
-        private async void WindowLoaded(object sender, RoutedEventArgs e)
+        private async void PageLoaded(object sender, RoutedEventArgs e)
         {
-            // Step 1: Connect to Microsoft Gestures service
+            // Step 1: Connect to Microsoft Gestures service  
             _gesturesService = GesturesServiceEndpointFactory.Create();
-            _gesturesService.StatusChanged += (s, arg) => Dispatcher.Invoke(() => GesturesServiceStatus.Text = $"[{arg.Status}]");
-            Closed += (s, arg) => _gesturesService?.Dispose();
+            var dispatcher = CoreWindow.GetForCurrentThread().Dispatcher;
+            _gesturesService.StatusChanged += async (s, arg) => await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => GesturesServiceStatus.Text = $"[{arg.Status}]");
+            Unloaded += async (s, arg) =>
+            {
+                await _gesturesService?.Disconnect();
+                _gesturesService?.Dispose();
+            };
             await _gesturesService.ConnectAsync();
 
             // Step 2: Define your custom gesture 
@@ -38,17 +50,16 @@ namespace Microsoft.Gestures.Samples.RotateSample
 
             // ... finally define the gesture using the hand pose objects defined above forming a simple state machine: hold -> rotate
             _rotateGesture = new Gesture("RotateRight", hold, rotate);
-            _rotateGesture.Triggered += (s, args) => Dispatcher.Invoke(() => Arrow.RenderTransform = new RotateTransform(++_rotateTimes * 90, Arrow.ActualWidth / 2, Arrow.ActualHeight / 2));  
+            _rotateGesture.Triggered += async (s, args) => await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                var rotateTransform = new RotateTransform { CenterX = Arrow.ActualWidth / 2, CenterY = Arrow.ActualHeight / 2 };
+                rotateTransform.Angle = ++_rotateTimes * 90;
+                Arrow.RenderTransform = rotateTransform;
+             });
 
             // Step 3: Register the gesture (When window focus is lost (gained) the service will automatically unregister (register) the gesture)
             //         To manually control the gesture registration, pass 'isGlobal: true' parameter in the function call below
             await _gesturesService.RegisterGesture(_rotateGesture);
-        }
-
-        private void OnAnimatedHelpEnded(object sender, RoutedEventArgs e)
-        {
-            animatedHelp.Position = new TimeSpan(0, 0, 1);
-            animatedHelp.Play();
-        }
+        }        
     }
 }

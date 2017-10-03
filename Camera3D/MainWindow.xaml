@@ -33,13 +33,13 @@
             </ModelVisual3D>
         </Viewport3D>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <TextBlock Text="Gestures Service status "/>
+            <TextBlock Text="Gestures Service status&#160;"/>
             <TextBlock Name="GesturesServiceStatus" Text="[Initializing]"/>
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <MediaElement x:Name="animatedHelp" Width="150" Height="150"
                       Source="ControlCamera.Animated.gif" MediaEnded="OnAnimatedHelpEnded" UnloadedBehavior="Manual" LoadedBehavior="Play"/>
-            <TextBlock Text="Pinch and move hand to control camera" TextAlignment="Center"/>
+            <TextBlock Text="Pinch and move right hand to control camera" TextAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

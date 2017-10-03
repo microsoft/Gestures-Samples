@@ -8,13 +8,13 @@
     <Grid>
         <TextBlock Name="Arrow" HorizontalAlignment="Center" VerticalAlignment="Center" Text="➩" FontSize="72"/>
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal">
-            <TextBlock Text="Gestures Service status "/>
+            <TextBlock Text="Gestures Service status&#160;"/>
             <TextBlock Name="GesturesServiceStatus" Text="[Initializing]"/>
         </StackPanel>
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <MediaElement x:Name="animatedHelp" Width="150" Height="150"
                       Source="RotateRight.Animated.gif" MediaEnded="OnAnimatedHelpEnded" UnloadedBehavior="Manual" LoadedBehavior="Play"/>
-            <TextBlock Text="Try to rotate the arrow" TextAlignment="Center"/>
+            <TextBlock Text="Try to rotate the arrow using your right hand" TextAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

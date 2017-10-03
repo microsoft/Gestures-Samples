@@ -14,7 +14,7 @@
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <MediaElement x:Name="animatedHelp" Width="150" Height="150"
                       Source="RewindGesture.Animated.gif" MediaEnded="OnAnimatedHelpEnded" UnloadedBehavior="Manual" LoadedBehavior="Play"/>
-            <TextBlock Text="'Pinch → Drag Left' to rewind" TextAlignment="Center"/>
+			<TextBlock Text="'Pinch → Drag Left' to rewind (use your right hand)" TextAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -1,0 +1,23 @@
+﻿<Page
+    x:Class="GrabAndPushUwpNative.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GrabAndPushUwpNative"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<Border x:Name="Border" BorderThickness="2" BorderBrush="Gray" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<TextBlock x:Name="PushMe" Text="Push Me !" FontSize="130"/>
+		</Border>
+		<StackPanel Margin="0, 50, 0, 0" HorizontalAlignment="Left" VerticalAlignment="Bottom" Orientation="Horizontal">
+			<TextBlock>Gestures Service status&#160;</TextBlock>
+			<TextBlock x:Name="GesturesServiceStatus" Text="[Initializing]"/>
+		</StackPanel>
+		<StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+			<Image Opacity="0.8" x:Name="AnimatedHelp" Margin="20" HorizontalAlignment="Center" Stretch="None" Source="ms-appx:///Assets/GrabGesture.Animated.gif"/>
+			<TextBlock Text="Grab the 'Push Me' caption and push/pull it (use your right hand)" TextAlignment="Center"/>
+		</StackPanel>
+	</Grid>
+</Page>
